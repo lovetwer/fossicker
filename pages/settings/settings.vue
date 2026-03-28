@@ -80,7 +80,7 @@
 import Toast from '@/components/toast/toast.vue'
 import Modal from '@/components/modal/modal.vue'
 import toastMixin from '@/mixins/toast.js'
-import { checkVersionUpdate } from '@/api/version.js'
+import { checkVersionUpdate, getVersionList } from '@/api/version.js'
 
 export default {
   components: { Toast, Modal },
@@ -116,13 +116,46 @@ export default {
     goVersionManage() {
       uni.navigateTo({ url: '/pages/admin-version/admin-version' })
     },
-    goDownloadApp() {
-      this.$modal({
-        title: '下载 App',
-        content: '更多功能尽在 App 版本，快去下载吧！',
-        confirmText: '我知道了',
-        showCancel: false
-      })
+    async goDownloadApp() {
+      uni.showLoading({ title: '获取中...' })
+      try {
+        const platform = uni.getSystemInfoSync().platform.toLowerCase()
+        const res = await getVersionList({
+          platform: platform === 'android' ? 'android' : 'ios',
+          status: 1
+        })
+        uni.hideLoading()
+        if (res.code === 200 && res.data && res.data.length > 0) {
+          const latestVersion = res.data[0]
+          const downloadUrl = latestVersion.downloadUrl
+          if (downloadUrl) {
+            const confirmResult = await this.$modal({
+              title: '下载 App',
+              content: '发现版本 v' + latestVersion.versionName + '\n\n点击确定复制下载链接',
+              confirmText: '复制链接',
+              showCancel: false
+            })
+            if (confirmResult.confirm) {
+              uni.setClipboardData({
+                data: downloadUrl,
+                success: () => {
+                  this.$toastSuccess('下载链接已复制，请前往浏览器打开')
+                },
+                fail: () => {
+                  this.$toastInfo('下载链接：' + downloadUrl)
+                }
+              })
+            }
+          } else {
+            this.$toastError('暂无下载链接')
+          }
+        } else {
+          this.$toastError('暂无可用版本')
+        }
+      } catch (e) {
+        uni.hideLoading()
+        this.$toastError('获取失败')
+      }
     },
     calculateCacheSize() {
       try {

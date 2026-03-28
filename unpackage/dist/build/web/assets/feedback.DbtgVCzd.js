@@ -1,1 +1,0 @@
-import{p as a,g as e,b as s}from"./request.wqyGnMCm.js";const r=e=>a("/feedback",e),d=a=>e("/feedback/my",a),b=a=>e("/admin/feedback",a),c=(a,e)=>s(`/admin/feedback/${a}/reply`,{reply:e});export{b as a,d as g,c as r,r as s};
