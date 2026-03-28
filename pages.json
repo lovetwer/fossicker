@@ -1,0 +1,211 @@
+{
+  "pages": [
+    {
+      "path": "pages/splash/splash",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "薅羊毛情报站",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black",
+        "enablePullDownRefresh": true,
+        "onReachBottomDistance": 120
+      }
+    },
+    {
+      "path": "pages/category/category",
+      "style": {
+        "navigationBarTitleText": "分类探索",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/publish/publish",
+      "style": {
+        "navigationBarTitleText": "发布线报",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/mine/mine",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/detail/detail",
+      "style": {
+        "navigationBarTitleText": "线报详情",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/search/search",
+      "style": {
+        "navigationBarTitleText": "搜索",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/my-deals/my-deals",
+      "style": {
+        "navigationBarTitleText": "我的发布",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/edit-profile/edit-profile",
+      "style": {
+        "navigationBarTitleText": "完善资料",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/audit/audit",
+      "style": {
+        "navigationBarTitleText": "审核管理",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/settings/settings",
+      "style": {
+        "navigationBarTitleText": "设置",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/change-password/change-password",
+      "style": {
+        "navigationBarTitleText": "修改密码",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/change-nickname/change-nickname",
+      "style": {
+        "navigationBarTitleText": "修改昵称",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/history/history",
+      "style": {
+        "navigationBarTitleText": "浏览历史",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/messages/messages",
+      "style": {
+        "navigationBarTitleText": "消息通知",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/send-notification/send-notification",
+      "style": {
+        "navigationBarTitleText": "发送通知",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/feedback/feedback",
+      "style": {
+        "navigationBarTitleText": "意见反馈",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/my-feedback/my-feedback",
+      "style": {
+        "navigationBarTitleText": "我的反馈",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/feedback-manage/feedback-manage",
+      "style": {
+        "navigationBarTitleText": "反馈管理",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/admin-version/admin-version",
+      "style": {
+        "navigationBarTitleText": "版本管理",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "薅羊毛情报站",
+    "navigationBarBackgroundColor": "#FCFAFC",
+    "backgroundColor": "#FCFAFC"
+  },
+  "tabBar": {
+    "color": "#8A94A6",
+    "selectedColor": "#C93A5A",
+    "backgroundColor": "#FCFAFC",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/tab-home.png",
+        "selectedIconPath": "static/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/publish/publish",
+        "text": "发布",
+        "iconPath": "static/tab-push.png",
+        "selectedIconPath": "static/tab-push-active.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "static/tab-mine.png",
+        "selectedIconPath": "static/tab-mine-active.png"
+      }
+    ]
+  },
+  "uniIdRouter": {}
+}
+
+
+
+
+
+
