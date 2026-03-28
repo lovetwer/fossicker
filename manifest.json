@@ -140,18 +140,5 @@
     "uniStatistics" : {
         "enable" : false
     },
-    "vueVersion" : "3",
-    "h5" : {
-        "title" : "淘金者",
-        "router" : {
-            "mode" : "hash",
-            "base" : "./"
-        },
-        "publicPath" : "./",
-        "optimization" : {
-            "treeShaking" : {
-                "enable" : true
-            }
-        }
-    }
+    "vueVersion" : "3"
 }

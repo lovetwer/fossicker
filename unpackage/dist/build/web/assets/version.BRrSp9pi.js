@@ -1,0 +1,1 @@
+import{p as s,g as e,c as a,d as r}from"./request.CmeZCt78.js";const i=e=>s("/version/create",e),o=e=>s(`/version/publish/${e}`),n=e=>s(`/version/unpublish/${e}`),t=s=>e("/version/list",s),p=s=>e("/version/latest",s),v=s=>a("/version/check",s),c=s=>r(`/version/delete/${s}`);export{t as a,i as b,v as c,c as d,p as g,o as p,n as u};

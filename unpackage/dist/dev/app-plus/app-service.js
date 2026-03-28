@@ -31,6 +31,119 @@ if (uni.restoreGlobal) {
 }
 (function(vue) {
   "use strict";
+  function formatAppLog(type, filename, ...args) {
+    if (uni.__log__) {
+      uni.__log__(type, filename, ...args);
+    } else {
+      console[type].apply(console, [...args, filename]);
+    }
+  }
+  function resolveEasycom(component, easycom) {
+    return typeof component === "string" ? easycom : component;
+  }
+  const BASE_URL = "https://yeiviicucucv.ap-northeast-1.clawcloudrun.com";
+  const request = (options) => {
+    return new Promise((resolve, reject) => {
+      const token = uni.getStorageSync("token");
+      uni.request({
+        url: BASE_URL + options.url,
+        method: options.method || "GET",
+        data: options.data || {},
+        header: {
+          "Content-Type": "application/json",
+          "Authorization": token ? `Bearer ${token}` : "",
+          ...options.header
+        },
+        success: (res) => {
+          if (res.statusCode === 200) {
+            resolve(res.data);
+          } else if (res.statusCode === 401) {
+            uni.removeStorageSync("token");
+            uni.removeStorageSync("userInfo");
+            uni.showToast({
+              title: "登录已过期",
+              icon: "none"
+            });
+            reject(res.data);
+          } else {
+            reject(res.data);
+          }
+        },
+        fail: (err) => {
+          uni.showToast({
+            title: "网络错误",
+            icon: "none"
+          });
+          reject(err);
+        }
+      });
+    });
+  };
+  const get = (url, params = {}) => {
+    return request({
+      url,
+      method: "GET",
+      data: params
+    });
+  };
+  const post = (url, data = {}) => {
+    return request({
+      url,
+      method: "POST",
+      data
+    });
+  };
+  const put = (url, data = {}) => {
+    return request({
+      url,
+      method: "PUT",
+      data
+    });
+  };
+  const del = (url, data = {}) => {
+    return request({
+      url,
+      method: "DELETE",
+      data
+    });
+  };
+  const postWithQuery = (url, data = {}) => {
+    const queryString = Object.entries(data).filter(([_, v]) => v !== void 0 && v !== null && v !== "").map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join("&");
+    const fullUrl = queryString ? `${url}?${queryString}` : url;
+    return request({
+      url: fullUrl,
+      method: "POST"
+    });
+  };
+  const putWithQuery = (url, data = {}) => {
+    const queryString = Object.entries(data).filter(([_, v]) => v !== void 0 && v !== null && v !== "").map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join("&");
+    const fullUrl = queryString ? `${url}?${queryString}` : url;
+    return request({
+      url: fullUrl,
+      method: "PUT"
+    });
+  };
+  const createVersion = (data) => {
+    return post("/version/create", data);
+  };
+  const publishVersion = (id) => {
+    return post(`/version/publish/${id}`);
+  };
+  const unpublishVersion = (id) => {
+    return post(`/version/unpublish/${id}`);
+  };
+  const getVersionList = (params) => {
+    return get("/version/list", params);
+  };
+  const getLatestVersion = (params) => {
+    return get("/version/latest", params);
+  };
+  const checkVersionUpdate = (params) => {
+    return postWithQuery("/version/check", params);
+  };
+  const deleteVersion = (id) => {
+    return del(`/version/delete/${id}`);
+  };
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
     for (const [key, val] of props) {
@@ -40,10 +153,31 @@ if (uni.restoreGlobal) {
   };
   const _sfc_main$p = {
     name: "SplashPage",
-    onLoad() {
+    data() {
+      return {
+        version: "1.0.0"
+      };
+    },
+    async onLoad() {
+      await this.loadVersion();
       setTimeout(() => {
         uni.switchTab({ url: "/pages/index/index" });
       }, 3e3);
+    },
+    methods: {
+      async loadVersion() {
+        try {
+          const platform = uni.getSystemInfoSync().platform.toLowerCase();
+          const res = await getLatestVersion({
+            platform: platform === "android" ? "android" : "ios"
+          });
+          if (res.code === 200 && res.data) {
+            this.version = res.data.versionName || "1.0.0";
+          }
+        } catch (e) {
+          formatAppLog("log", "at pages/splash/splash.vue:65", "获取版本失败", e);
+        }
+      }
     }
   };
   function _sfc_render$o(_ctx, _cache, $props, $setup, $data, $options) {
@@ -76,20 +210,16 @@ if (uni.restoreGlobal) {
       ]),
       vue.createElementVNode("text", { class: "app-name" }, "薅羊毛"),
       vue.createElementVNode("text", { class: "app-slogan" }, "优雅省钱 · 品质生活"),
-      vue.createElementVNode("text", { class: "version" }, "v1.0.0")
+      vue.createElementVNode(
+        "text",
+        { class: "version" },
+        "v" + vue.toDisplayString($data.version),
+        1
+        /* TEXT */
+      )
     ]);
   }
   const PagesSplashSplash = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["render", _sfc_render$o], ["__scopeId", "data-v-b5d3b004"], ["__file", "C:/Users/10292/Documents/HBuilderProjects/fossicker/pages/splash/splash.vue"]]);
-  function formatAppLog(type, filename, ...args) {
-    if (uni.__log__) {
-      uni.__log__(type, filename, ...args);
-    } else {
-      console[type].apply(console, [...args, filename]);
-    }
-  }
-  function resolveEasycom(component, easycom) {
-    return typeof component === "string" ? easycom : component;
-  }
   const _sfc_main$o = {
     name: "CustomToast",
     data() {
@@ -455,88 +585,6 @@ if (uni.restoreGlobal) {
   ];
   const HOT_KEYWORDS = ["京东", "淘宝", "美团", "饿了么", "爱奇艺", "腾讯视频", "会员", "红包"];
   const HOT_PLATFORMS = ["淘宝", "京东", "拼多多", "美团", "饿了么", "支付宝", "爱奇艺", "腾讯视频"];
-  const BASE_URL = "https://yeiviicucucv.ap-northeast-1.clawcloudrun.com";
-  const request = (options) => {
-    return new Promise((resolve, reject) => {
-      const token = uni.getStorageSync("token");
-      uni.request({
-        url: BASE_URL + options.url,
-        method: options.method || "GET",
-        data: options.data || {},
-        header: {
-          "Content-Type": "application/json",
-          "Authorization": token ? `Bearer ${token}` : "",
-          ...options.header
-        },
-        success: (res) => {
-          if (res.statusCode === 200) {
-            resolve(res.data);
-          } else if (res.statusCode === 401) {
-            uni.removeStorageSync("token");
-            uni.removeStorageSync("userInfo");
-            uni.showToast({
-              title: "登录已过期",
-              icon: "none"
-            });
-            reject(res.data);
-          } else {
-            reject(res.data);
-          }
-        },
-        fail: (err) => {
-          uni.showToast({
-            title: "网络错误",
-            icon: "none"
-          });
-          reject(err);
-        }
-      });
-    });
-  };
-  const get = (url, params = {}) => {
-    return request({
-      url,
-      method: "GET",
-      data: params
-    });
-  };
-  const post = (url, data = {}) => {
-    return request({
-      url,
-      method: "POST",
-      data
-    });
-  };
-  const put = (url, data = {}) => {
-    return request({
-      url,
-      method: "PUT",
-      data
-    });
-  };
-  const del = (url, data = {}) => {
-    return request({
-      url,
-      method: "DELETE",
-      data
-    });
-  };
-  const postWithQuery = (url, data = {}) => {
-    const queryString = Object.entries(data).filter(([_, v]) => v !== void 0 && v !== null && v !== "").map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join("&");
-    const fullUrl = queryString ? `${url}?${queryString}` : url;
-    return request({
-      url: fullUrl,
-      method: "POST"
-    });
-  };
-  const putWithQuery = (url, data = {}) => {
-    const queryString = Object.entries(data).filter(([_, v]) => v !== void 0 && v !== null && v !== "").map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join("&");
-    const fullUrl = queryString ? `${url}?${queryString}` : url;
-    return request({
-      url: fullUrl,
-      method: "PUT"
-    });
-  };
   const getDealList = (params) => {
     return get("/deals", params);
   };
@@ -3209,24 +3257,6 @@ if (uni.restoreGlobal) {
     ]);
   }
   const PagesAuditAudit = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$a], ["__scopeId", "data-v-249ccafc"], ["__file", "C:/Users/10292/Documents/HBuilderProjects/fossicker/pages/audit/audit.vue"]]);
-  const createVersion = (data) => {
-    return post("/version/create", data);
-  };
-  const publishVersion = (id) => {
-    return post(`/version/publish/${id}`);
-  };
-  const unpublishVersion = (id) => {
-    return post(`/version/unpublish/${id}`);
-  };
-  const getVersionList = (params) => {
-    return get("/version/list", params);
-  };
-  const checkVersionUpdate = (params) => {
-    return postWithQuery("/version/check", params);
-  };
-  const deleteVersion = (id) => {
-    return del(`/version/delete/${id}`);
-  };
   const _sfc_main$a = {
     components: { Toast: __easycom_0, Modal: __easycom_1 },
     mixins: [toastMixin],
@@ -3245,10 +3275,24 @@ if (uni.restoreGlobal) {
         return uni.getSystemInfoSync().platform === "h5" || typeof plus === "undefined";
       }
     },
-    onLoad() {
+    async onLoad() {
+      await this.loadVersion();
       this.calculateCacheSize();
     },
     methods: {
+      async loadVersion() {
+        try {
+          const platform = uni.getSystemInfoSync().platform.toLowerCase();
+          const res = await getLatestVersion({
+            platform: platform === "android" ? "android" : "ios"
+          });
+          if (res.code === 200 && res.data) {
+            this.version = res.data.versionName || "1.0.0";
+          }
+        } catch (e) {
+          formatAppLog("log", "at pages/settings/settings.vue:118", "获取版本失败", e);
+        }
+      },
       goChangePassword() {
         uni.navigateTo({ url: "/pages/change-password/change-password" });
       },

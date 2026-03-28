@@ -1,0 +1,1 @@
+import{g as a,p as s,a as e}from"./request.CmeZCt78.js";const d=s=>a("/deals",s),l=s=>a(`/deals/${s}`),r=a=>s("/deals",a),i=()=>a("/categories"),n=s=>a("/deals/search",s),o=s=>a("/admin/deals/pending",s),p=a=>e(`/admin/deals/${a}/approve`),m=a=>e(`/admin/deals/${a}/reject`),t=a=>e(`/admin/deals/${a}/offline`);export{d as a,l as b,o as c,p as d,i as g,t as o,r as p,m as r,n as s};

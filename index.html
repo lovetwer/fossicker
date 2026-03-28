@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <script>
+      window.process = { env: {} };
       var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') ||
         CSS.supports('top: constant(a)'))
       document.write(

@@ -31,18 +31,40 @@
     </view>
     <text class="app-name">薅羊毛</text>
     <text class="app-slogan">优雅省钱 · 品质生活</text>
-    <text class="version">v1.0.0</text>
+    <text class="version">v{{ version }}</text>
   </view>
 </template>
 
 <script>
+import { getLatestVersion } from '@/api/version.js'
+
 export default {
   name: 'SplashPage',
-  onLoad() {
-    // 3秒后跳转到首页
+  data() {
+    return {
+      version: '1.0.0'
+    }
+  },
+  async onLoad() {
+    await this.loadVersion()
     setTimeout(() => {
       uni.switchTab({ url: '/pages/index/index' })
     }, 3000)
+  },
+  methods: {
+    async loadVersion() {
+      try {
+        const platform = uni.getSystemInfoSync().platform.toLowerCase()
+        const res = await getLatestVersion({
+          platform: platform === 'android' ? 'android' : 'ios'
+        })
+        if (res.code === 200 && res.data) {
+          this.version = res.data.versionName || '1.0.0'
+        }
+      } catch (e) {
+        console.log('获取版本失败', e)
+      }
+    }
   }
 }
 </script>

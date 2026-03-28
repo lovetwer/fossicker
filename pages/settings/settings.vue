@@ -80,7 +80,7 @@
 import Toast from '@/components/toast/toast.vue'
 import Modal from '@/components/modal/modal.vue'
 import toastMixin from '@/mixins/toast.js'
-import { checkVersionUpdate, getVersionList } from '@/api/version.js'
+import { checkVersionUpdate, getVersionList, getLatestVersion } from '@/api/version.js'
 
 export default {
   components: { Toast, Modal },
@@ -100,10 +100,24 @@ export default {
       return uni.getSystemInfoSync().platform === 'h5' || typeof plus === 'undefined'
     }
   },
-  onLoad() {
+  async onLoad() {
+    await this.loadVersion()
     this.calculateCacheSize()
   },
   methods: {
+    async loadVersion() {
+      try {
+        const platform = uni.getSystemInfoSync().platform.toLowerCase()
+        const res = await getLatestVersion({
+          platform: platform === 'android' ? 'android' : 'ios'
+        })
+        if (res.code === 200 && res.data) {
+          this.version = res.data.versionName || '1.0.0'
+        }
+      } catch (e) {
+        console.log('获取版本失败', e)
+      }
+    },
     goChangePassword() {
       uni.navigateTo({ url: '/pages/change-password/change-password' })
     },
