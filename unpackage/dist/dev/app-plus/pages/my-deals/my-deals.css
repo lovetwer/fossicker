@@ -148,3 +148,23 @@
   gap: 0.5625rem;
   padding-bottom: 1.25rem;
 }
+.empty-state[data-v-85ee2e13] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 6.25rem;
+}
+.empty-text[data-v-85ee2e13] {
+  font-size: 0.9375rem;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.empty-sub[data-v-85ee2e13] {
+  font-size: 0.8125rem;
+  color: #8a94a6;
+  text-align: center;
+  padding: 0 1.875rem;
+  line-height: 1.6;
+}

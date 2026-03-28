@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <view class="my-deals-page">
     <view class="hero card">
       <text class="hero-title">我的发布</text>
@@ -8,7 +8,10 @@
     <view class="deal-list" v-if="deals.length > 0">
       <DealCard v-for="deal in deals" :key="deal._id || deal.id" :deal="deal" />
     </view>
-    <Empty v-else text="你还没有发布过线报" subText="把刚发现的优惠整理一下发出来，很快这里就会丰富起来。" icon="📝" />
+    <view class="empty-state" v-else>
+      <text class="empty-text">你还没有发布过线报</text>
+      <text class="empty-sub">把刚发现的优惠整理一下发出来，很快这里就会丰富起来。</text>
+    </view>
   </view>
 </template>
 
@@ -87,5 +90,25 @@ export default {
   flex-direction: column;
   gap: 18rpx;
   padding-bottom: 40rpx;
+}
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 200rpx;
+}
+.empty-text {
+  font-size: 30rpx;
+  color: #1f2937;
+  margin-bottom: 16rpx;
+  text-align: center;
+}
+.empty-sub {
+  font-size: 26rpx;
+  color: #8a94a6;
+  text-align: center;
+  padding: 0 60rpx;
+  line-height: 1.6;
 }
 </style>

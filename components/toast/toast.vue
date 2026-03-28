@@ -97,12 +97,13 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 40rpx 48rpx;
-  background: rgba(31, 41, 55, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   border-radius: 24rpx;
-  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8rpx 32rpx rgba(201, 58, 90, 0.15);
   backdrop-filter: blur(20rpx);
   transform: scale(1);
   animation: toastIn 0.2s ease-out;
+  border: 1rpx solid rgba(201, 58, 90, 0.1);
 }
 @keyframes toastIn {
   from {
@@ -125,18 +126,18 @@ export default {
   font-size: 40rpx;
 }
 .toast-content.success .toast-icon {
-  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  background: linear-gradient(135deg, #c93a5a 0%, #e66584 100%);
   color: #fff;
 }
 .toast-content.error .toast-icon {
-  background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
   color: #fff;
 }
 .toast-content.loading .toast-icon {
   background: linear-gradient(135deg, #c93a5a 0%, #e66584 100%);
 }
 .toast-content.none .toast-icon {
-  background: linear-gradient(135deg, #607d8b 0%, #78909c 100%);
+  background: linear-gradient(135deg, #c93a5a 0%, #e66584 100%);
   color: #fff;
 }
 .loading {
@@ -153,7 +154,7 @@ export default {
   }
 }
 .toast-text {
-  color: #fff;
+  color: #333;
   font-size: 28rpx;
   text-align: center;
   line-height: 1.5;

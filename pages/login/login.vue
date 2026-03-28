@@ -75,6 +75,19 @@
       <view class="other-login" @click="showAccountLogin = true" v-else>
         <text class="other-text">使用账号密码登录</text>
       </view>
+
+      <!-- 协议同意 -->
+      <view class="agreement-section">
+        <view class="checkbox" :class="{ checked: agreeAgreement }" @click="agreeAgreement = !agreeAgreement">
+          <text v-if="agreeAgreement">✓</text>
+        </view>
+        <view class="agreement-text">
+          <text>我已阅读并同意</text>
+          <text class="link" @click="goAgreement">《用户协议》</text>
+          <text>和</text>
+          <text class="link" @click="goPrivacy">《隐私政策》</text>
+        </view>
+      </view>
     </view>
 
     <!-- 底部提示 -->
@@ -103,6 +116,7 @@ export default {
       showAccountLogin: false,
       deviceId: '',
       deviceModel: '',
+      agreeAgreement: false,
       accountForm: {
         username: '',
         password: ''
@@ -122,6 +136,10 @@ export default {
       })
     },
     async deviceLogin() {
+      if (!this.agreeAgreement) {
+        this.$toastInfo('请先同意用户协议和隐私政策')
+        return
+      }
       if (!this.deviceId) {
         this.$toastError('获取设备信息失败')
         return
@@ -149,6 +167,10 @@ export default {
       }
     },
     async accountLogin() {
+      if (!this.agreeAgreement) {
+        this.$toastInfo('请先同意用户协议和隐私政策')
+        return
+      }
       if (!this.accountForm.username.trim()) {
         this.$toastInfo('请输入账号')
         return
@@ -184,6 +206,12 @@ export default {
           url: '/pages/index/index'
         })
       }, 1000)
+    },
+    goAgreement() {
+      uni.navigateTo({ url: '/pages/agreement/agreement' })
+    },
+    goPrivacy() {
+      uni.navigateTo({ url: '/pages/privacy/privacy' })
     }
   }
 }
@@ -497,5 +525,44 @@ export default {
 .tip-item {
   font-size: 24rpx;
   color: #8b5a6b;
+}
+
+.agreement-section {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 32rpx;
+  padding: 0 20rpx;
+}
+
+.checkbox {
+  width: 36rpx;
+  height: 36rpx;
+  border: 2rpx solid #c93a5a;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+  margin-top: 4rpx;
+}
+
+.checkbox.checked {
+  background: #c93a5a;
+  color: #fff;
+}
+
+.checkbox text {
+  font-size: 24rpx;
+}
+
+.agreement-text {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+.agreement-text .link {
+  color: #c93a5a;
 }
 </style>

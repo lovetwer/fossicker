@@ -44,6 +44,7 @@
           :src="img"
           mode="aspectFill"
           class="content-image"
+          lazy-load
           @click="previewImage(index)"
         />
       </view>

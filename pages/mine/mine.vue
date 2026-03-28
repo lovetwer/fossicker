@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <view class="mine-page">
     <view class="hero">
       <view class="hero-bg">
@@ -90,17 +90,21 @@
     
     <!-- 自定义 Modal -->
     <modal ref="modal"></modal>
+    
+    <!-- 自定义 TabBar -->
+    <custom-tabbar :current="2"></custom-tabbar>
   </view>
 </template>
 
 <script>
-import { getUserInfo, getUnreadCount } from '@/api/user.js'
+import { getUserInfo, getUnreadCount, getMyDeals } from '@/api/user.js'
 import Toast from '@/components/toast/toast.vue'
 import Modal from '@/components/modal/modal.vue'
+import CustomTabbar from '@/components/custom-tabbar/custom-tabbar.vue'
 import toastMixin from '@/mixins/toast.js'
 
 export default {
-  components: { Toast, Modal },
+  components: { Toast, Modal, CustomTabbar },
   mixins: [toastMixin],
   data() {
     return {
@@ -126,12 +130,9 @@ export default {
       return this.userInfo.approvedCount || this.userInfo.publishCount || 0
     },
     level() {
+      // 发布多少条就是LV几，最低LV1
       const count = this.approvedCount
-      if (count >= 50) return 5
-      if (count >= 20) return 4
-      if (count >= 10) return 3
-      if (count >= 5) return 2
-      return 1
+      return Math.max(1, count)
     }
   },
   onShow() {
@@ -155,9 +156,30 @@ export default {
       try {
         const res = await getUserInfo()
         this.userInfo = res.data || res
+        // 获取发布数量
+        await this.loadPublishCount()
         uni.setStorageSync('userInfo', this.userInfo)
       } catch (e) {
         console.error('获取用户信息失败', e)
+      }
+    },
+    async loadPublishCount() {
+      try {
+        const res = await getMyDeals({ page: 0, size: 1000 })
+        // 从响应中获取列表长度
+        let list = []
+        if (res.data && Array.isArray(res.data.content)) {
+          list = res.data.content
+        } else if (res.data && Array.isArray(res.data.list)) {
+          list = res.data.list
+        } else if (Array.isArray(res.data)) {
+          list = res.data
+        }
+        const total = list.length
+        console.log('发布数量:', total, res)
+        this.userInfo = { ...this.userInfo, approvedCount: total }
+      } catch (e) {
+        console.error('获取发布数量失败', e)
       }
     },
     async loadUnreadCount() {
@@ -237,7 +259,7 @@ export default {
 <style scoped>
 .mine-page {
   min-height: 100vh;
-  padding: 24rpx;
+  padding: 24rpx 24rpx 140rpx;
 }
 .hero,
 .menu-list,

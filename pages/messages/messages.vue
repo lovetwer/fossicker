@@ -32,7 +32,6 @@
     </view>
 
     <view class="empty-state" v-else>
-      <text class="empty-icon">🔔</text>
       <text class="empty-text">暂无通知</text>
       <text class="empty-sub">审核结果和系统提醒会在这里显示</text>
     </view>

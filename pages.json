@@ -97,6 +97,30 @@
       }
     },
     {
+      "path": "pages/disclaimer/disclaimer",
+      "style": {
+        "navigationBarTitleText": "免责声明",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/agreement/agreement",
+      "style": {
+        "navigationBarTitleText": "用户协议",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/privacy/privacy",
+      "style": {
+        "navigationBarTitleText": "隐私政策",
+        "navigationBarBackgroundColor": "#FCFAFC",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
       "path": "pages/change-password/change-password",
       "style": {
         "navigationBarTitleText": "修改密码",
@@ -175,32 +199,7 @@
     "navigationBarBackgroundColor": "#FCFAFC",
     "backgroundColor": "#FCFAFC"
   },
-  "tabBar": {
-    "color": "#8A94A6",
-    "selectedColor": "#C93A5A",
-    "backgroundColor": "#FCFAFC",
-    "borderStyle": "white",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "static/tab-home.png",
-        "selectedIconPath": "static/tab-home-active.png"
-      },
-      {
-        "pagePath": "pages/publish/publish",
-        "text": "发布",
-        "iconPath": "static/tab-push.png",
-        "selectedIconPath": "static/tab-push-active.png"
-      },
-      {
-        "pagePath": "pages/mine/mine",
-        "text": "我的",
-        "iconPath": "static/tab-mine.png",
-        "selectedIconPath": "static/tab-mine-active.png"
-      }
-    ]
-  },
+
   "uniIdRouter": {}
 }
 

@@ -33,6 +33,7 @@
             :src="img"
             mode="aspectFill"
             class="deal-image"
+            lazy-load
             @click="previewImage(deal.images, index)"
           />
         </view>

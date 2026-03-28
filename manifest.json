@@ -1,33 +1,25 @@
 {
-    "name" : "淘金者",
+    "name" : "薅羊毛情报站",
     "appid" : "__UNI__F1825BD",
     "description" : "汇聚全网优惠信息，帮你省钱",
     "versionName" : "1.0.0-beta",
     "versionCode" : 1,
     "transformPx" : false,
     "app-plus" : {
-        "usingComponents" : true,
-        "nvueStyleCompiler" : "uni-app",
-        "compilerVersion" : 3,
         "splashscreen" : {
-            "androidStyle" : "default",
-            "android" : {
-                "hdpi" : "static/splash/splash-480x762.png",
-                "xhdpi" : "static/splash/splash-720x1242.png",
-                "xxhdpi" : "static/splash/splash-1080x1882.png"
-            },
-            "iosStyle" : "common",
-            "ios" : {
-                "iphone" : {
-                    "portrait-896h@2x" : "static/splash/splash-828x1792.png",
-                    "portrait-896h@3x" : "static/splash/splash-1242x2688.png",
-                    "portrait-812h@3x" : "static/splash/splash-1125x2436.png",
-                    "portrait-736h@3x" : "static/splash/splash-1242x2208.png",
-                    "portrait-667h@2x" : "static/splash/splash-750x1334.png",
-                    "portrait@2x" : "static/splash/splash-640x960.png"
-                }
+            "alwaysShowBeforeRender" : false, // 是否等待首页渲染完毕再关闭启动界面。设为false可以更快关闭。
+            "waiting" : false, // 是否等待首页渲染完毕。通常与上面配合使用。
+            "autoclose" : true, // 是否自动关闭
+            "delay" : 0 // 启动界面停留时间，设为0表示尽可能短
+        },
+        // 针对 Android 的配置
+        "android" : {
+            "splashscreen" : {
+                "mode" : "close" // 可以是 'default' 或 'close'。'close'表示关闭启动图。
             }
         },
+        // 如果你想用自定义图片替换Android启动图，可以配置'image'属性
+        // "image": "/static/splash_android.png"
         "modules" : {},
         "distribute" : {
             "android" : {
@@ -114,9 +106,6 @@
                         "spotlight@3x" : "unpackage/res/icons/120x120.png"
                     }
                 }
-            },
-            "splashscreen" : {
-                "androidStyle" : "common"
             }
         }
     },

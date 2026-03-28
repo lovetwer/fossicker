@@ -55,6 +55,10 @@
             <text class="menu-arrow">›</text>
           </view>
         </view>
+        <view class="menu-item" @click="goDisclaimer">
+          <text class="menu-text">免责声明</text>
+          <text class="menu-arrow">›</text>
+        </view>
         <view class="menu-item" @click="goAbout">
           <text class="menu-text">关于我们</text>
           <text class="menu-arrow">›</text>
@@ -194,6 +198,9 @@ export default {
         this.calculateCacheSize()
         this.$toastSuccess('缓存已清除')
       }
+    },
+    goDisclaimer() {
+      uni.navigateTo({ url: '/pages/disclaimer/disclaimer' })
     },
     goAbout() {
       this.$modal({

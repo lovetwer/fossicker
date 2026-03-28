@@ -22,6 +22,7 @@
           :src="img"
           mode="aspectFill"
           class="deal-image"
+          lazy-load
         />
       </view>
 

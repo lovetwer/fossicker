@@ -15,6 +15,8 @@
             <view class="stack-line line-short"></view>
           </view>
         </view>
+		
+		
         <view class="floating-pill pill-main">红包</view>
         <view class="floating-pill pill-side">会员</view>
       </view>
@@ -87,6 +89,9 @@
     
     <!-- 自定义 Toast -->
     <toast ref="toast"></toast>
+    
+    <!-- 自定义 TabBar -->
+    <custom-tabbar :current="0"></custom-tabbar>
   </view>
 </template>
 
@@ -94,6 +99,7 @@
 import DealCard from '@/components/deal-card/deal-card.vue'
 import Empty from '@/components/empty/empty.vue'
 import Toast from '@/components/toast/toast.vue'
+import CustomTabbar from '@/components/custom-tabbar/custom-tabbar.vue'
 import toastMixin from '@/mixins/toast.js'
 import { SORT_OPTIONS } from '@/utils/constant.js'
 import { getDealList, getCategories } from '@/api/deal.js'
@@ -102,7 +108,8 @@ export default {
   components: {
     DealCard,
     Empty,
-    Toast
+    Toast,
+    CustomTabbar
   },
   mixins: [toastMixin],
   data() {
@@ -271,7 +278,7 @@ export default {
 
 <style scoped>
 .index-page {
-  padding: 16rpx 20rpx 0;
+  padding: 16rpx 20rpx 140rpx;
   box-sizing: border-box;
 }
 

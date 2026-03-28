@@ -42,14 +42,25 @@ export default {
   name: 'SplashPage',
   data() {
     return {
-      version: '1.0.0'
+      version: '1.0.0',
+      canNavigate: false,
+      minShowTime: null
     }
   },
   async onLoad() {
     await this.loadVersion()
-    setTimeout(() => {
-      uni.switchTab({ url: '/pages/index/index' })
-    }, 3000)
+  },
+  onReady() {
+    // 页面准备就绪后，确保至少显示2秒splash，然后跳转
+    this.minShowTime = setTimeout(() => {
+      this.canNavigate = true
+      this.tryNavigate()
+    }, 2000)
+  },
+  onUnload() {
+    if (this.minShowTime) {
+      clearTimeout(this.minShowTime)
+    }
   },
   methods: {
     async loadVersion() {
@@ -63,6 +74,12 @@ export default {
         }
       } catch (e) {
         console.log('获取版本失败', e)
+      }
+    },
+    tryNavigate() {
+      // 显示至少2秒后跳转
+      if (this.canNavigate) {
+        uni.redirectTo({ url: '/pages/index/index' })
       }
     }
   }

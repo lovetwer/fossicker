@@ -314,7 +314,7 @@ export default {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 24rpx 24rpx 0;
+  padding: 24rpx;
 }
 
 .form-scroll {

@@ -23,14 +23,13 @@
           </view>
         </view>
         <view class="item-image" v-if="item.images && item.images.length > 0">
-          <image :src="item.images[0]" mode="aspectFill"></image>
+          <image :src="item.images[0]" mode="aspectFill" lazy-load></image>
         </view>
         <text class="delete-btn" @click.stop="handleDelete(item.dealId)">删除</text>
       </view>
     </view>
 
     <view class="empty-state" v-else>
-      <text class="empty-icon">📭</text>
       <text class="empty-text">暂无浏览记录</text>
       <text class="empty-sub">去看看有什么优惠吧</text>
     </view>

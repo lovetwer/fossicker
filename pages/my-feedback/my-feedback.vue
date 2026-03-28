@@ -25,6 +25,7 @@
             :src="img"
             mode="aspectFill"
             class="feedback-image"
+            lazy-load
           />
         </view>
         
