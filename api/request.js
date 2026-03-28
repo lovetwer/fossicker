@@ -1,7 +1,7 @@
 // 请求封装
-const BASE_URL = 'http://101.126.90.167:8080'
+//const BASE_URL = 'http://101.126.90.167:8080'
 //const BASE_URL = 'http://192.168.31.86:8080'
-
+const BASE_URL = 'https://yeiviicucucv.ap-northeast-1.clawcloudrun.com'
 // 请求拦截
 const request = (options) => {
 	return new Promise((resolve, reject) => {

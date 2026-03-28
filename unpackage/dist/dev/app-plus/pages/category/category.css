@@ -1,0 +1,101 @@
+
+.category-page[data-v-8145b772] {
+  min-height: 100vh;
+  padding: 0.75rem;
+}
+.hero[data-v-8145b772],
+.category-grid[data-v-8145b772],
+.hot-section[data-v-8145b772] {
+  margin-bottom: 0.625rem;
+}
+.hero[data-v-8145b772] {
+  padding: 0.9375rem;
+}
+.hero-kicker[data-v-8145b772] {
+  display: inline-flex;
+  padding: 0.3125rem 0.5625rem;
+  border-radius: 31.21875rem;
+  background: rgba(253, 240, 245, 0.95);
+  color: #8f1f39;
+  font-size: 0.6875rem;
+  margin-bottom: 0.5625rem;
+}
+.hero-title[data-v-8145b772] {
+  display: block;
+  font-size: 1.25rem;
+  color: #1f2937;
+  font-weight: 700;
+  margin-bottom: 0.375rem;
+}
+.hero-subtitle[data-v-8145b772] {
+  display: block;
+  font-size: 0.8125rem;
+  color: #667085;
+  line-height: 1.7;
+}
+.category-grid[data-v-8145b772] {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5625rem;
+  padding: 0.75rem;
+}
+.category-item[data-v-8145b772] {
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.78);
+}
+.icon-wrapper[data-v-8145b772] {
+  width: 2.875rem;
+  height: 2.875rem;
+  border-radius: 0.8125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5625rem;
+}
+.category-emoji[data-v-8145b772] {
+  font-size: 1.3125rem;
+}
+.category-name[data-v-8145b772] {
+  display: block;
+  font-size: 0.9375rem;
+  color: #1f2937;
+  font-weight: 700;
+  margin-bottom: 0.3125rem;
+}
+.category-desc[data-v-8145b772] {
+  display: block;
+  font-size: 0.75rem;
+  color: #7b8594;
+  line-height: 1.6;
+}
+.hot-section[data-v-8145b772] {
+  padding: 0.875rem;
+}
+.section-head[data-v-8145b772] {
+  margin-bottom: 0.5625rem;
+}
+.section-title[data-v-8145b772] {
+  display: block;
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.section-subtitle[data-v-8145b772] {
+  font-size: 0.75rem;
+  color: #8a94a6;
+}
+.platform-list[data-v-8145b772] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4375rem;
+}
+.platform-tag[data-v-8145b772] {
+  padding: 0.5rem 0.75rem;
+  border-radius: 31.21875rem;
+  background: linear-gradient(135deg, rgba(201, 58, 90, 0.06) 0%, rgba(230, 101, 132, 0.08) 100%);
+  color: #8f1f39;
+  font-size: 0.78125rem;
+  font-weight: 600;
+}
