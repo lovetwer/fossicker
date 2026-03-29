@@ -111,7 +111,7 @@ export default {
         uni.setStorageSync('userInfo', res.data.user)
         this.$toastSuccess('注册成功')
         setTimeout(() => {
-          uni.switchTab({ url: '/pages/index/index' })
+          uni.redirectTo({ url: '/pages/index/index' })
         }, 1500)
       } catch (e) {
         if (e.code === 409) {

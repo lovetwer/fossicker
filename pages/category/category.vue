@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <view class="category-page">
     <view class="hero card">
       <text class="hero-kicker">探索频道</text>
@@ -65,7 +65,7 @@ export default {
     },
     goCategory(categoryId) {
       uni.setStorageSync('selectedCategory', categoryId)
-      uni.switchTab({
+      uni.redirectTo({
         url: '/pages/index/index'
       })
     },

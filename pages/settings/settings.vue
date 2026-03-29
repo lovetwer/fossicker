@@ -280,7 +280,7 @@ export default {
         uni.removeStorageSync('token')
         uni.removeStorageSync('currentUser')
         uni.removeStorageSync('userInfo')
-        uni.switchTab({ url: '/pages/index/index' })
+        uni.redirectTo({ url: '/pages/index/index' })
         this.$toastSuccess('已退出登录')
       }
     }

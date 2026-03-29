@@ -1111,7 +1111,7 @@ if (uni.restoreGlobal) {
       },
       goCategory(categoryId) {
         uni.setStorageSync("selectedCategory", categoryId);
-        uni.switchTab({
+        uni.redirectTo({
           url: "/pages/index/index"
         });
       },
@@ -1496,7 +1496,7 @@ if (uni.restoreGlobal) {
             images: []
           };
           setTimeout(() => {
-            uni.switchTab({ url: "/pages/index/index" });
+            uni.redirectTo({ url: "/pages/index/index" });
           }, 1200);
         } catch (e) {
           this.$toastError("发布失败，请稍后再试");
@@ -1889,7 +1889,9 @@ if (uni.restoreGlobal) {
         }
       },
       goLogin() {
-        uni.navigateTo({ url: "/pages/login/login" });
+        if (!this.isLogin) {
+          uni.navigateTo({ url: "/pages/login/login" });
+        }
       },
       goSetting() {
         uni.navigateTo({ url: "/pages/settings/settings" });
@@ -2200,19 +2202,23 @@ if (uni.restoreGlobal) {
         const shareDesc = this.deal.content ? this.deal.content.slice(0, 50) + "..." : "快来看看这个优惠";
         const sharePath = `/pages/detail/detail?id=${this.dealId}`;
         const shareUrl = `https://focker.us.ci/#${sharePath}`;
-        uni.share({
-          provider: "weixin",
-          title: shareTitle,
-          desc: shareDesc,
-          type: 0,
+        uni.shareWithSystem({
+          type: "text",
+          summary: `${shareTitle}
+${shareDesc}
+${shareUrl}`,
           href: shareUrl,
-          imageUrl: this.deal.images && this.deal.images.length > 0 ? this.deal.images[0] : "",
-          scene: "WXSceneSession",
           success: () => {
-            this.$toastSuccess("分享成功");
+            formatAppLog("log", "at pages/detail/detail.vue:166", "分享成功");
           },
           fail: (err) => {
-            formatAppLog("log", "at pages/detail/detail.vue:172", "分享失败", err);
+            formatAppLog("log", "at pages/detail/detail.vue:169", "分享失败", err);
+            uni.setClipboardData({
+              data: shareUrl,
+              success: () => {
+                this.$toastSuccess("链接已复制");
+              }
+            });
           }
         });
       }
@@ -2825,7 +2831,7 @@ if (uni.restoreGlobal) {
         uni.setStorageSync("userInfo", data.user);
         this.$toastSuccess("登录成功");
         setTimeout(() => {
-          uni.switchTab({
+          uni.redirectTo({
             url: "/pages/index/index"
           });
         }, 1e3);
@@ -3047,7 +3053,7 @@ if (uni.restoreGlobal) {
           uni.setStorageSync("userInfo", res.data.user);
           this.$toastSuccess("注册成功");
           setTimeout(() => {
-            uni.switchTab({ url: "/pages/index/index" });
+            uni.redirectTo({ url: "/pages/index/index" });
           }, 1500);
         } catch (e) {
           if (e.code === 409) {
@@ -3696,7 +3702,7 @@ if (uni.restoreGlobal) {
           uni.removeStorageSync("token");
           uni.removeStorageSync("currentUser");
           uni.removeStorageSync("userInfo");
-          uni.switchTab({ url: "/pages/index/index" });
+          uni.redirectTo({ url: "/pages/index/index" });
           this.$toastSuccess("已退出登录");
         }
       }

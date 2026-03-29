@@ -297,7 +297,7 @@ export default {
           images: []
         }
         setTimeout(() => {
-          uni.switchTab({ url: '/pages/index/index' })
+          uni.redirectTo({ url: '/pages/index/index' })
         }, 1200)
       } catch (e) {
         this.$toastError('发布失败，请稍后再试')

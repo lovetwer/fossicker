@@ -197,7 +197,9 @@ export default {
       }
     },
     goLogin() {
-      uni.navigateTo({ url: '/pages/login/login' })
+      if (!this.isLogin) {
+        uni.navigateTo({ url: '/pages/login/login' })
+      }
     },
     goSetting() {
       uni.navigateTo({ url: '/pages/settings/settings' })

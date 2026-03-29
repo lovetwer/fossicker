@@ -157,19 +157,23 @@ export default {
       const shareUrl = `https://focker.us.ci/#${sharePath}`
       
       // #ifdef APP-PLUS
-      uni.share({
-        provider: 'weixin',
-        title: shareTitle,
-        desc: shareDesc,
-        type: 0,
+      // 使用系统分享
+      uni.shareWithSystem({
+        type: 'text',
+        summary: `${shareTitle}\n${shareDesc}\n${shareUrl}`,
         href: shareUrl,
-        imageUrl: this.deal.images && this.deal.images.length > 0 ? this.deal.images[0] : '',
-        scene: 'WXSceneSession',
         success: () => {
-          this.$toastSuccess('分享成功')
+          console.log('分享成功')
         },
         fail: (err) => {
           console.log('分享失败', err)
+          // 系统分享失败时，复制链接
+          uni.setClipboardData({
+            data: shareUrl,
+            success: () => {
+              this.$toastSuccess('链接已复制')
+            }
+          })
         }
       })
       // #endif
