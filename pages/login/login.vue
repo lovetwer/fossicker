@@ -31,15 +31,15 @@
         <view class="horn horn-left"></view>
         <view class="horn horn-right"></view>
       </view>
-      <text class="app-name">薅羊毛</text>
-      <text class="app-slogan">优雅省钱 · 品质生活</text>
+      <text class="app-name">赛博摸金</text>
+      <text class="app-slogan">数字寻宝 · 价值发现</text>
     </view>
 
     <!-- 登录表单 -->
     <view class="login-form card">
       <view class="form-header">
         <text class="form-title">欢迎回来</text>
-        <text class="form-subtitle">登录后查看你的优惠情报</text>
+        <text class="form-subtitle">登录后开启你的寻宝之旅</text>
       </view>
 
       <button class="primary-btn" @click="deviceLogin" :disabled="loading">

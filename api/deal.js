@@ -7,6 +7,21 @@ export const getDealList = (params) => {
 	return get('/deals', params)
 }
 
+// 获取最新发布（按发布时间倒序）
+export const getLatestDeals = (params) => {
+	return get('/deals/latest', params)
+}
+
+// 获取热度最高（按浏览量倒序）
+export const getHotDeals = (params) => {
+	return get('/deals/hot', params)
+}
+
+// 获取即将结束（按过期时间正序）
+export const getEndingSoonDeals = (params) => {
+	return get('/deals/ending-soon', params)
+}
+
 // 获取羊毛详情
 export const getDealDetail = (id) => {
 	return get(`/deals/${id}`)
@@ -45,6 +60,11 @@ export const favoriteDeal = (id) => {
 // 取消收藏
 export const unfavoriteDeal = (id) => {
 	return del(`/deals/${id}/favorite`)
+}
+
+// 增加热度
+export const addDealHot = (id, count = 1) => {
+	return post(`/deals/${id}/add-hot`, null, { params: { count } })
 }
 
 // 获取评论列表

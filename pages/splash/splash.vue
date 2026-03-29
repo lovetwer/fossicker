@@ -29,8 +29,8 @@
       <view class="horn horn-left"></view>
       <view class="horn horn-right"></view>
     </view>
-    <text class="app-name">薅羊毛</text>
-    <text class="app-slogan">优雅省钱 · 品质生活</text>
+    <text class="app-name">赛博摸金</text>
+    <text class="app-slogan">数字寻宝 · 价值发现</text>
     <text class="version">v{{ version }}</text>
   </view>
 </template>

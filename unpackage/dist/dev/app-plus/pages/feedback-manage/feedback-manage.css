@@ -267,6 +267,7 @@ to {
   align-items: center;
   justify-content: center;
   padding: 6.25rem 1.25rem;
+  min-height: 50vh;
 }
 .empty-icon[data-v-5028b886] {
   font-size: 2.5rem;

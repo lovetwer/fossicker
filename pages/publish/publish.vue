@@ -132,7 +132,7 @@
 
     <view class="submit-section">
       <button class="submit-btn" @click="submit" :disabled="submitting">
-        {{ submitting ? '正在发布...' : '发布这条线报' }}
+        {{ submitting ? '正在发布...' : '发布这条宝藏' }}
       </button>
     </view>
     
@@ -262,7 +262,7 @@ export default {
       if (!token) {
         const res = await this.$modal({
           title: '需要先登录',
-          content: '登录后才可以发布线报，是否现在去登录？'
+          content: '登录后才可以发布宝藏，是否现在去登录？'
         })
         if (res.confirm) {
           uni.navigateTo({ url: '/pages/login/login' })

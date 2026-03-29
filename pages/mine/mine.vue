@@ -29,7 +29,7 @@
       <view class="menu-item" @click="goMyDeals">
         <view>
           <text class="menu-title">我的发布</text>
-          <text class="menu-subtitle">回看你发过的所有线报</text>
+          <text class="menu-subtitle">回看你发现的所有宝藏</text>
         </view>
         <text class="menu-arrow">›</text>
       </view>
@@ -55,7 +55,7 @@
       <view class="menu-item" @click="goAudit">
         <view>
           <text class="menu-title">审核管理</text>
-          <text class="menu-subtitle">快速处理待审核线报</text>
+          <text class="menu-subtitle">快速处理待审核宝藏</text>
         </view>
         <view class="trailing">
           <text class="badge warm" v-if="auditCount > 0">{{ auditCount }}</text>
@@ -121,7 +121,7 @@ export default {
     displayName() {
       if (this.userInfo.nickname) return this.userInfo.nickname
       const id = this.userInfo._id || this.userInfo.id || ''
-      return id ? `用户${String(id).slice(-6)}` : '情报站用户'
+      return id ? `用户${String(id).slice(-6)}` : '摸金校尉'
     },
     userInitial() {
       return this.isLogin && this.displayName ? this.displayName.slice(0, 1) : '绵'
@@ -215,8 +215,8 @@ export default {
     },
     goAbout() {
       this.$modal({
-        title: '关于情报站',
-        content: '薅羊毛情报站 v1.0.0\n\n把全网优惠整理成更好逛、更好读的福利情报流。',
+        title: '关于赛博摸金',
+        content: '赛博摸金 v1.0.0\n\n在数字世界中探寻宝藏，让每一次点击都有价值。',
         showCancel: false
       })
     },

@@ -1,7 +1,7 @@
 <template>
   <view class="edit-profile-page">
     <view class="hero card">
-      <text class="hero-title">首次登录，先完成你的情报站身份</text>
+      <text class="hero-title">首次登录，先完成你的摸金校尉身份</text>
       <text class="hero-subtitle">昵称只支持英文和数字，方便我们避免特殊字符带来的兼容问题。</text>
     </view>
 

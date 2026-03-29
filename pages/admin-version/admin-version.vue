@@ -549,6 +549,7 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 200rpx 40rpx;
+  min-height: 50vh;
 }
 
 .empty-icon {

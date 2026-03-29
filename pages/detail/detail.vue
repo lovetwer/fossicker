@@ -4,9 +4,12 @@
       <view class="hero-top">
         <view class="hero-tags">
           <text class="platform-tag">{{ deal.platform || '全网' }}</text>
-          <text class="category-tag">{{ categoryEmoji }} {{ categoryName }}</text>
+          <text class="category-tag">{{ categoryName }}</text>
+          <text class="publish-time">{{ formatTime(deal.publishTime || deal.createTime) || '刚刚发布' }}</text>
         </view>
-        <text class="publish-time">{{ formatTime(deal.publishTime || deal.createTime) || '刚刚发布' }}</text>
+        <view class="share-btn-wrap" @tap="shareDeal">
+          <image class="share-btn" src="/static/share.png" mode="aspectFit" />
+        </view>
       </view>
 
       <text class="detail-title">{{ deal.title }}</text>
@@ -61,7 +64,7 @@
       </view>
     </view>
 
-    <Empty v-if="!loading && !(deal._id || deal.id)" text="这条线报暂时无法查看" subText="你可以返回列表刷新后再试。" icon="📭" />
+    <Empty v-if="!loading && !(deal._id || deal.id)" text="这条宝藏暂时无法查看" subText="你可以返回列表刷新后再试。" icon="📭" />
     
     <!-- 自定义 Toast -->
     <toast ref="toast"></toast>
@@ -71,7 +74,7 @@
 <script>
 import { formatTime, formatCountdown, copyText } from '@/utils/util.js'
 import { CATEGORIES } from '@/utils/constant.js'
-import { getDealDetail } from '@/api/deal.js'
+import { getDealDetail, addDealHot } from '@/api/deal.js'
 import Empty from '@/components/empty/empty.vue'
 import Toast from '@/components/toast/toast.vue'
 import toastMixin from '@/mixins/toast.js'
@@ -120,10 +123,21 @@ export default {
           _id: data.id || data._id,
           images: Array.isArray(data.images) ? data.images : []
         }
+        // 浏览详情时自动增加热度
+        this.addHot()
       } catch (e) {
         this.$toastError('详情加载失败')
       } finally {
         this.loading = false
+      }
+    },
+    // 增加热度
+    async addHot() {
+      try {
+        await addDealHot(this.dealId, 1)
+      } catch (e) {
+        // 热度增加失败不提示用户，静默处理
+        console.log('增加热度失败', e)
       }
     },
     copyLink() {
@@ -134,6 +148,50 @@ export default {
         current: this.deal.images[index],
         urls: this.deal.images
       })
+    },
+    // 分享当前页面
+    shareDeal() {
+      const shareTitle = this.deal.title || '发现了一个宝藏优惠'
+      const shareDesc = this.deal.content ? this.deal.content.slice(0, 50) + '...' : '快来看看这个优惠'
+      const sharePath = `/pages/detail/detail?id=${this.dealId}`
+      const shareUrl = `https://focker.us.ci/#${sharePath}`
+      
+      // #ifdef APP-PLUS
+      uni.share({
+        provider: 'weixin',
+        title: shareTitle,
+        desc: shareDesc,
+        type: 0,
+        href: shareUrl,
+        imageUrl: this.deal.images && this.deal.images.length > 0 ? this.deal.images[0] : '',
+        scene: 'WXSceneSession',
+        success: () => {
+          this.$toastSuccess('分享成功')
+        },
+        fail: (err) => {
+          console.log('分享失败', err)
+        }
+      })
+      // #endif
+      
+      // #ifdef H5
+      if (navigator.share) {
+        navigator.share({
+          title: shareTitle,
+          text: shareDesc,
+          url: shareUrl
+        }).catch(err => {
+          console.log('分享取消', err)
+        })
+      } else {
+        uni.setClipboardData({
+          data: shareUrl,
+          success: () => {
+            this.$toastSuccess('链接已复制')
+          }
+        })
+      }
+      // #endif
     }
   }
 }
@@ -166,6 +224,21 @@ export default {
   flex-wrap: wrap;
 }
 
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.share-btn-wrap {
+  padding: 8rpx;
+}
+
+.share-btn {
+  width: 40rpx;
+  height: 40rpx;
+}
+
 .platform-tag,
 .category-tag {
   padding: 10rpx 18rpx;
@@ -179,13 +252,13 @@ export default {
 }
 
 .category-tag {
-  color: #8f1f39;
-  background: rgba(253, 240, 245, 0.95);
+  color: #c93a5a;
+  font-size: 23rpx;
 }
 
 .publish-time {
   font-size: 24rpx;
-  color: #8a94a6;
+  color: #94a3b8;
 }
 
 .detail-title {

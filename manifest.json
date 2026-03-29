@@ -1,5 +1,5 @@
 {
-    "name" : "薅羊毛情报站",
+    "name" : "赛博摸金",
     "appid" : "__UNI__F1825BD",
     "description" : "汇聚全网优惠信息，帮你省钱",
     "versionName" : "1.0.0-beta",
@@ -20,7 +20,9 @@
         },
         // 如果你想用自定义图片替换Android启动图，可以配置'image'属性
         // "image": "/static/splash_android.png"
-        "modules" : {},
+        "modules" : {
+            "Share" : {}
+        },
         "distribute" : {
             "android" : {
                 "icons" : {
@@ -74,7 +76,9 @@
                 },
                 "dSYMs" : false
             },
-            "sdkConfigs" : {},
+            "sdkConfigs" : {
+                "share" : {}
+            },
             "icons" : {
                 "android" : {
                     "hdpi" : "unpackage/res/icons/72x72.png",

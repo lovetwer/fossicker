@@ -1,1 +1,0 @@
-import{e,O as a}from"./index-CFnt2eCl.js";const s=s=>new Promise(((t,o)=>{const r=e("token");a({url:"http://192.168.31.86:8080/upload/image",filePath:s,name:"file",header:{Authorization:r?`Bearer ${r}`:""},success:e=>{if(200===e.statusCode){const a=JSON.parse(e.data);t(a)}else o(new Error("上传失败"))},fail:e=>{o(e)}})}));export{s as u};

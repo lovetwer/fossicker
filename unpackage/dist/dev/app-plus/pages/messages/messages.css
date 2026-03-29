@@ -192,18 +192,6 @@ to {
   padding: 3.75rem 1.5rem;
   text-align: center;
 }
-.empty-orb[data-v-e2280098] {
-  width: 4.625rem;
-  height: 4.625rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.75rem;
-  margin-bottom: 0.875rem;
-  background: linear-gradient(135deg, rgba(201, 58, 90, 0.07) 0%, rgba(244, 183, 196, 0.14) 100%);
-  box-shadow: 0 0.625rem 1.25rem rgba(201, 58, 90, 0.08);
-}
 .empty-text[data-v-e2280098] {
   font-size: 1rem;
   color: #2f3948;
@@ -352,6 +340,7 @@ to {
   align-items: center;
   justify-content: center;
   padding-top: 5rem;
+  min-height: 60vh;
 }
 .empty-icon[data-v-ecc172b4] {
   font-size: 3.125rem;

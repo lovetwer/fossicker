@@ -1,6 +1,5 @@
-﻿<template>
+<template>
   <view class="empty-container">
-    <view class="empty-orb">{{ icon }}</view>
     <text class="empty-text">{{ text }}</text>
     <text class="empty-subtext" v-if="subText">{{ subText }}</text>
   </view>
@@ -18,10 +17,7 @@ export default {
       type: String,
       default: ''
     },
-    icon: {
-      type: String,
-      default: '🪄'
-    }
+
   }
 }
 </script>
@@ -34,19 +30,6 @@ export default {
   justify-content: center;
   padding: 120rpx 48rpx;
   text-align: center;
-}
-
-.empty-orb {
-  width: 148rpx;
-  height: 148rpx;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 56rpx;
-  margin-bottom: 28rpx;
-  background: linear-gradient(135deg, rgba(201, 58, 90, 0.07) 0%, rgba(244, 183, 196, 0.14) 100%);
-  box-shadow: 0 20rpx 40rpx rgba(201, 58, 90, 0.08);
 }
 
 .empty-text {

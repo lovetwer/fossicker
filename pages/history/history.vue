@@ -251,6 +251,7 @@ export default {
   align-items: center;
   justify-content: center;
   padding-top: 160rpx;
+  min-height: 60vh;
 }
 .empty-icon {
   font-size: 100rpx;

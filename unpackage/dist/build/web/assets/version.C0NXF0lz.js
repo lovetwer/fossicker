@@ -1,1 +1,0 @@
-import{p as s,g as e,c as a,d as r}from"./request.B9Km9jHv.js";const i=e=>s("/version/create",e),o=e=>s(`/version/publish/${e}`),n=e=>s(`/version/unpublish/${e}`),t=s=>e("/version/list",s),v=s=>e("/version/latest",s),c=s=>a("/version/check",s),p=s=>r(`/version/delete/${s}`);export{t as a,i as b,c,p as d,v as g,o as p,n as u};

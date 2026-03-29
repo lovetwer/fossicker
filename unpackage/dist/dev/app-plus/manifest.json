@@ -5,7 +5,7 @@
     "iPad"
   ],
   "id": "__UNI__F1825BD",
-  "name": "薅羊毛情报站",
+  "name": "赛博摸金",
   "version": {
     "name": "1.0.0-beta",
     "code": 1
@@ -17,6 +17,7 @@
     "url": ""
   },
   "permissions": {
+    "Share": {},
     "UniNView": {
       "description": "UniNView原生渲染"
     }
@@ -128,6 +129,7 @@
         "dSYMs": false
       },
       "plugins": {
+        "share": {},
         "audio": {
           "mp3": {
             "description": "Android平台录音支持MP3格式文件"

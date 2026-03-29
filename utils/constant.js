@@ -5,7 +5,7 @@ export const APP_NAME = '薅羊毛情报站'
 export const CATEGORIES = [
   { id: 'all', name: '全部', emoji: '✨', description: '所有可用优惠' },
   { id: 'ecommerce', name: '电商', emoji: '🛍', description: '平台大促与下单返利' },
-  { id: 'food', name: '外卖', emoji: '🍔', description: '吃喝券包与拼单福利' },
+  { id: 'food', name: '外卖', emoji: '🍱', description: '吃喝券包与拼单福利' },
   { id: 'finance', name: '金融', emoji: '💳', description: '支付立减与开卡奖励' },
   { id: 'video', name: '影音', emoji: '🎬', description: '会员充值与内容礼包' },
   { id: 'travel', name: '出行', emoji: '✈️', description: '打车机酒和通勤优惠' },

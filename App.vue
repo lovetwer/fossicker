@@ -1,9 +1,13 @@
 <script>
+import { getLatestVersion } from '@/api/version.js'
+
 export default {
   onLaunch() {
     console.log('App Launch')
     // 挂载自定义 toast 到全局
     this.$mountToast()
+    // 获取版本信息并存储到本地
+    this.fetchAndStoreVersion()
   },
   onShow() {
     console.log('App Show')
@@ -12,6 +16,32 @@ export default {
     console.log('App Hide')
   },
   methods: {
+    async fetchAndStoreVersion() {
+      try {
+        const platform = uni.getSystemInfoSync().platform.toLowerCase()
+        const res = await getLatestVersion({
+          platform: platform === 'android' ? 'android' : 'ios'
+        })
+        if (res.code === 200 && res.data) {
+          const versionInfo = {
+            versionName: res.data.versionName || '1.0.0',
+            versionCode: res.data.versionCode || 1,
+            updateTime: Date.now()
+          }
+          uni.setStorageSync('appVersion', versionInfo)
+          console.log('版本信息已存储:', versionInfo)
+        }
+      } catch (e) {
+        console.log('获取版本失败', e)
+        // 如果获取失败，使用默认值
+        const defaultVersion = {
+          versionName: '1.0.0',
+          versionCode: 1,
+          updateTime: Date.now()
+        }
+        uni.setStorageSync('appVersion', defaultVersion)
+      }
+    },
     $mountToast() {
       // 创建 toast 实例并挂载到全局
       const toastVm = {

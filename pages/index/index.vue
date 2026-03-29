@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <view class="index-page">
     <view class="hero card">
       <view class="hero-visual" aria-hidden="true">
@@ -73,17 +73,21 @@
         </view>
       </view>
 
+      <view class="loading-container" v-if="loading && filteredDealList.length === 0">
+        <view class="loader"></view>
+        <text class="loading-text">内容加载中...</text>
+      </view>
+
       <Empty
         v-if="filteredDealList.length === 0 && !loading"
-        text="还没有符合条件的线报"
+        text="还没有符合条件的宝藏"
         subText="换个分类看看，或者发布你刚发现的新福利。"
-        icon="📭"
       />
 
       <view class="load-more" v-if="filteredDealList.length > 0">
         <text v-if="loading">正在刷新优惠情报...</text>
         <text v-else-if="!hasMore">已经到底了</text>
-        <text v-else>上滑加载更多线报</text>
+        <text v-else>上滑加载更多宝藏</text>
       </view>
     </view>
     
@@ -102,7 +106,7 @@ import Toast from '@/components/toast/toast.vue'
 import CustomTabbar from '@/components/custom-tabbar/custom-tabbar.vue'
 import toastMixin from '@/mixins/toast.js'
 import { SORT_OPTIONS } from '@/utils/constant.js'
-import { getDealList, getCategories } from '@/api/deal.js'
+import { getDealList, getCategories, getLatestDeals, getHotDeals, getEndingSoonDeals } from '@/api/deal.js'
 
 export default {
   components: {
@@ -203,15 +207,29 @@ export default {
 
       try {
         const params = {
-          sort: this.currentSort,
           page: this.page - 1,
-          pageSize: this.pageSize
+          size: this.pageSize
         }
         // 如果不是全部，传分类名称
         if (this.currentCategory !== '全部') {
           params.categoryName = this.currentCategory
         }
-        const res = await getDealList(params)
+        
+        // 根据排序方式选择不同的接口
+        let res
+        switch (this.currentSort) {
+          case 'newest':
+            res = await getLatestDeals(params)
+            break
+          case 'hottest':
+            res = await getHotDeals(params)
+            break
+          case 'ending':
+            res = await getEndingSoonDeals(params)
+            break
+          default:
+            res = await getLatestDeals(params)
+        }
 
         const list = this.normalizeList(res)
 
@@ -278,6 +296,7 @@ export default {
 
 <style scoped>
 .index-page {
+  min-height: 100vh;
   padding: 16rpx 20rpx 140rpx;
   box-sizing: border-box;
 }
@@ -593,6 +612,51 @@ export default {
   text-align: center;
   padding: 32rpx 0 40rpx;
   font-size: 24rpx;
+  color: #8a94a6;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+}
+
+.loader {
+  width: 80rpx;
+  aspect-ratio: 1;
+  display: grid;
+  border: 6rpx solid #0000;
+  border-radius: 50%;
+  border-right-color: #c93a5a;
+  animation: l15 1s infinite linear;
+}
+
+.loader::before,
+.loader::after {
+  content: "";
+  grid-area: 1/1;
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+  animation: l15 2s infinite;
+}
+
+.loader::after {
+  margin: 8px;
+  animation-duration: 3s;
+}
+
+@keyframes l15 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.loading-text {
+  margin-top: 24rpx;
+  font-size: 28rpx;
   color: #8a94a6;
 }
 </style>

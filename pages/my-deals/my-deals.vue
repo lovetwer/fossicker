@@ -2,14 +2,14 @@
   <view class="my-deals-page">
     <view class="hero card">
       <text class="hero-title">我的发布</text>
-      <text class="hero-subtitle">这里收纳了你发过的每一条优惠线报，方便你回看和复盘。</text>
+      <text class="hero-subtitle">这里收纳了你发现的每一处宝藏，方便你回看和复盘。</text>
     </view>
 
     <view class="deal-list" v-if="deals.length > 0">
       <DealCard v-for="deal in deals" :key="deal._id || deal.id" :deal="deal" />
     </view>
     <view class="empty-state" v-else>
-      <text class="empty-text">你还没有发布过线报</text>
+      <text class="empty-text">你还没有发布过宝藏</text>
       <text class="empty-sub">把刚发现的优惠整理一下发出来，很快这里就会丰富起来。</text>
     </view>
   </view>
@@ -97,6 +97,7 @@ export default {
   align-items: center;
   justify-content: center;
   padding-top: 200rpx;
+  min-height: 60vh;
 }
 .empty-text {
   font-size: 30rpx;

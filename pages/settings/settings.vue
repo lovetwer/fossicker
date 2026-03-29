@@ -70,7 +70,7 @@
       <button class="logout-btn" @click="handleLogout">退出登录</button>
     </view>
 
-    <view class="bottom-tip">薅羊毛情报站 v{{ version }}</view>
+    <view class="bottom-tip">赛博摸金 v{{ version }}</view>
     
     <!-- 自定义 Toast -->
     <toast ref="toast"></toast>
@@ -104,22 +104,22 @@ export default {
       return uni.getSystemInfoSync().platform === 'h5' || typeof plus === 'undefined'
     }
   },
-  async onLoad() {
-    await this.loadVersion()
+  onLoad() {
+    this.loadVersion()
     this.calculateCacheSize()
   },
   methods: {
-    async loadVersion() {
+    loadVersion() {
       try {
-        const platform = uni.getSystemInfoSync().platform.toLowerCase()
-        const res = await getLatestVersion({
-          platform: platform === 'android' ? 'android' : 'ios'
-        })
-        if (res.code === 200 && res.data) {
-          this.version = res.data.versionName || '1.0.0'
+        const versionInfo = uni.getStorageSync('appVersion')
+        if (versionInfo && versionInfo.versionName) {
+          this.version = versionInfo.versionName
+        } else {
+          this.version = '1.0.0'
         }
       } catch (e) {
-        console.log('获取版本失败', e)
+        console.log('读取版本失败', e)
+        this.version = '1.0.0'
       }
     },
     goChangePassword() {
@@ -205,7 +205,7 @@ export default {
     goAbout() {
       this.$modal({
         title: '关于我们',
-        content: '薅羊毛情报站 - 分享优质优惠信息，一起薅羊毛！\n\n版本：' + this.version,
+        content: '赛博摸金 - 在数字世界中探寻宝藏！\n\n版本：' + this.version,
         showCancel: false
       })
     },
@@ -213,24 +213,28 @@ export default {
       uni.showLoading({ title: '检查中...' })
       try {
         const platform = uni.getSystemInfoSync().platform.toLowerCase()
-        const res = await checkVersionUpdate({
-          platform: platform === 'android' ? 'android' : 'ios',
-          versionCode: this.version
+        // 获取云端最新版本
+        const res = await getLatestVersion({
+          platform: platform === 'android' ? 'android' : 'ios'
         })
         uni.hideLoading()
         if (res.code === 200 && res.data) {
-          const { hasUpdate, forceUpdate, latestVersion, message } = res.data
-          if (hasUpdate && latestVersion) {
+          const latestVersion = res.data
+          const cloudVersion = latestVersion.versionName || '1.0.0'
+          // 对比本地版本和云端版本
+          const compareResult = this.compareVersion(cloudVersion, this.version)
+          if (compareResult > 0) {
+            // 云端版本更新
             const confirmResult = await this.$modal({
-              title: '发现新版本 v' + latestVersion.versionName,
+              title: '发现新版本 v' + cloudVersion,
               content: latestVersion.updateContent || '有新版本可以更新！\n\n是否立即下载？',
-              confirmText: forceUpdate ? '立即更新' : '稍后',
-              cancelText: forceUpdate ? '' : '取消'
+              confirmText: '立即更新',
+              cancelText: '稍后'
             })
             if (confirmResult.confirm && latestVersion.downloadUrl) {
               const downloadUrl = latestVersion.downloadUrl
               const isApp = uni.getSystemInfoSync().platform === 'android' || uni.getSystemInfoSync().platform === 'ios'
-              if (forceUpdate && isApp) {
+              if (isApp) {
                 plus.runtime.openURL(downloadUrl)
               } else {
                 uni.setClipboardData({
@@ -245,7 +249,7 @@ export default {
               }
             }
           } else {
-            this.$toastSuccess(message || '已是最新版本')
+            this.$toastSuccess('已是最新版本')
           }
         } else {
           this.$toastSuccess('已是最新版本')

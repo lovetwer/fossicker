@@ -138,9 +138,6 @@ if (uni.restoreGlobal) {
   const getLatestVersion = (params) => {
     return get("/version/latest", params);
   };
-  const checkVersionUpdate = (params) => {
-    return postWithQuery("/version/check", params);
-  };
   const deleteVersion = (id) => {
     return del(`/version/delete/${id}`);
   };
@@ -223,8 +220,8 @@ if (uni.restoreGlobal) {
         vue.createElementVNode("view", { class: "horn horn-left" }),
         vue.createElementVNode("view", { class: "horn horn-right" })
       ]),
-      vue.createElementVNode("text", { class: "app-name" }, "薅羊毛"),
-      vue.createElementVNode("text", { class: "app-slogan" }, "优雅省钱 · 品质生活"),
+      vue.createElementVNode("text", { class: "app-name" }, "赛博摸金"),
+      vue.createElementVNode("text", { class: "app-slogan" }, "数字寻宝 · 价值发现"),
       vue.createElementVNode(
         "text",
         { class: "version" },
@@ -383,20 +380,34 @@ if (uni.restoreGlobal) {
           )
         ]),
         vue.createElementVNode("view", { class: "tabbar-center" }, [
-          vue.createElementVNode(
-            "view",
-            {
-              class: vue.normalizeClass(["center-btn", { active: $props.current === 1, pressing: $data.isPressing }]),
-              onClick: _cache[1] || (_cache[1] = ($event) => $options.switchTab(1)),
-              onTouchstart: _cache[2] || (_cache[2] = (...args) => $options.onPressStart && $options.onPressStart(...args)),
-              onTouchend: _cache[3] || (_cache[3] = (...args) => $options.onPressEnd && $options.onPressEnd(...args))
-            },
-            [
-              vue.createElementVNode("text", { class: "center-icon" }, "+")
-            ],
-            34
-            /* CLASS, NEED_HYDRATION */
-          )
+          vue.createElementVNode("view", { class: "center-btn-wrapper" }, [
+            vue.createElementVNode("view", { class: "animal-bg" }, [
+              vue.createElementVNode("view", { class: "animal-ears-out" }, [
+                vue.createElementVNode("view", { class: "ae-out left" }),
+                vue.createElementVNode("view", { class: "ae-out right" })
+              ])
+            ]),
+            vue.createElementVNode(
+              "view",
+              {
+                class: vue.normalizeClass(["center-btn", { active: $props.current === 1, pressing: $data.isPressing }]),
+                onClick: _cache[1] || (_cache[1] = ($event) => $options.switchTab(1)),
+                onTouchstart: _cache[2] || (_cache[2] = (...args) => $options.onPressStart && $options.onPressStart(...args)),
+                onTouchend: _cache[3] || (_cache[3] = (...args) => $options.onPressEnd && $options.onPressEnd(...args))
+              },
+              [
+                vue.createElementVNode("view", { class: "animal-face-inner" }, [
+                  vue.createElementVNode("view", { class: "af-eyes" }, [
+                    vue.createElementVNode("view", { class: "af-eye" }),
+                    vue.createElementVNode("view", { class: "af-eye" })
+                  ]),
+                  vue.createElementVNode("view", { class: "af-mouth" })
+                ])
+              ],
+              34
+              /* CLASS, NEED_HYDRATION */
+            )
+          ])
         ]),
         vue.createElementVNode("view", { class: "tabbar-right" }, [
           vue.createElementVNode(
@@ -606,22 +617,11 @@ if (uni.restoreGlobal) {
       subText: {
         type: String,
         default: ""
-      },
-      icon: {
-        type: String,
-        default: "🪄"
       }
     }
   };
   function _sfc_render$o(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "empty-container" }, [
-      vue.createElementVNode(
-        "view",
-        { class: "empty-orb" },
-        vue.toDisplayString($props.icon),
-        1
-        /* TEXT */
-      ),
       vue.createElementVNode(
         "text",
         { class: "empty-text" },
@@ -686,7 +686,7 @@ if (uni.restoreGlobal) {
   const CATEGORIES = [
     { id: "all", name: "全部", emoji: "✨", description: "所有可用优惠" },
     { id: "ecommerce", name: "电商", emoji: "🛍", description: "平台大促与下单返利" },
-    { id: "food", name: "外卖", emoji: "🍔", description: "吃喝券包与拼单福利" },
+    { id: "food", name: "外卖", emoji: "🍱", description: "吃喝券包与拼单福利" },
     { id: "finance", name: "金融", emoji: "💳", description: "支付立减与开卡奖励" },
     { id: "video", name: "影音", emoji: "🎬", description: "会员充值与内容礼包" },
     { id: "travel", name: "出行", emoji: "✈️", description: "打车机酒和通勤优惠" },
@@ -703,11 +703,23 @@ if (uni.restoreGlobal) {
   const getDealList = (params) => {
     return get("/deals", params);
   };
+  const getLatestDeals = (params) => {
+    return get("/deals/latest", params);
+  };
+  const getHotDeals = (params) => {
+    return get("/deals/hot", params);
+  };
+  const getEndingSoonDeals = (params) => {
+    return get("/deals/ending-soon", params);
+  };
   const getDealDetail = (id) => {
     return get(`/deals/${id}`);
   };
   const publishDeal = (data) => {
     return post("/deals", data);
+  };
+  const addDealHot = (id, count = 1) => {
+    return post(`/deals/${id}/add-hot`, null);
   };
   const getCategories = () => {
     return get("/categories");
@@ -803,7 +815,7 @@ if (uni.restoreGlobal) {
             }))
           ];
         } catch (e) {
-          formatAppLog("error", "at pages/index/index.vue:182", "获取分类失败", e);
+          formatAppLog("error", "at pages/index/index.vue:186", "获取分类失败", e);
         }
       },
       syncSelectedCategory() {
@@ -832,14 +844,26 @@ if (uni.restoreGlobal) {
         this.loading = true;
         try {
           const params = {
-            sort: this.currentSort,
             page: this.page - 1,
-            pageSize: this.pageSize
+            size: this.pageSize
           };
           if (this.currentCategory !== "全部") {
             params.categoryName = this.currentCategory;
           }
-          const res = await getDealList(params);
+          let res;
+          switch (this.currentSort) {
+            case "newest":
+              res = await getLatestDeals(params);
+              break;
+            case "hottest":
+              res = await getHotDeals(params);
+              break;
+            case "ending":
+              res = await getEndingSoonDeals(params);
+              break;
+            default:
+              res = await getLatestDeals(params);
+          }
           const list = this.normalizeList(res);
           if (this.page === 1) {
             this.dealList = list;
@@ -1035,17 +1059,23 @@ if (uni.restoreGlobal) {
             /* KEYED_FRAGMENT */
           ))
         ])) : vue.createCommentVNode("v-if", true),
-        $options.filteredDealList.length === 0 && !$data.loading ? (vue.openBlock(), vue.createBlock(_component_Empty, {
+        $data.loading && $options.filteredDealList.length === 0 ? (vue.openBlock(), vue.createElementBlock("view", {
           key: 1,
-          text: "还没有符合条件的线报",
-          subText: "换个分类看看，或者发布你刚发现的新福利。",
-          icon: "📭"
+          class: "loading-container"
+        }, [
+          vue.createElementVNode("view", { class: "loader" }),
+          vue.createElementVNode("text", { class: "loading-text" }, "内容加载中...")
+        ])) : vue.createCommentVNode("v-if", true),
+        $options.filteredDealList.length === 0 && !$data.loading ? (vue.openBlock(), vue.createBlock(_component_Empty, {
+          key: 2,
+          text: "还没有符合条件的宝藏",
+          subText: "换个分类看看，或者发布你刚发现的新福利。"
         })) : vue.createCommentVNode("v-if", true),
         $options.filteredDealList.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
-          key: 2,
+          key: 3,
           class: "load-more"
         }, [
-          $data.loading ? (vue.openBlock(), vue.createElementBlock("text", { key: 0 }, "正在刷新优惠情报...")) : !$data.hasMore ? (vue.openBlock(), vue.createElementBlock("text", { key: 1 }, "已经到底了")) : (vue.openBlock(), vue.createElementBlock("text", { key: 2 }, "上滑加载更多线报"))
+          $data.loading ? (vue.openBlock(), vue.createElementBlock("text", { key: 0 }, "正在刷新优惠情报...")) : !$data.hasMore ? (vue.openBlock(), vue.createElementBlock("text", { key: 1 }, "已经到底了")) : (vue.openBlock(), vue.createElementBlock("text", { key: 2 }, "上滑加载更多宝藏"))
         ])) : vue.createCommentVNode("v-if", true)
       ]),
       vue.createVNode(
@@ -1437,7 +1467,7 @@ if (uni.restoreGlobal) {
         if (!token) {
           const res = await this.$modal({
             title: "需要先登录",
-            content: "登录后才可以发布线报，是否现在去登录？"
+            content: "登录后才可以发布宝藏，是否现在去登录？"
           });
           if (res.confirm) {
             uni.navigateTo({ url: "/pages/login/login" });
@@ -1702,7 +1732,7 @@ if (uni.restoreGlobal) {
           class: "submit-btn",
           onClick: _cache[8] || (_cache[8] = (...args) => $options.submit && $options.submit(...args)),
           disabled: $data.submitting
-        }, vue.toDisplayString($data.submitting ? "正在发布..." : "发布这条线报"), 9, ["disabled"])
+        }, vue.toDisplayString($data.submitting ? "正在发布..." : "发布这条宝藏"), 9, ["disabled"])
       ]),
       vue.createVNode(
         _component_toast,
@@ -1766,7 +1796,7 @@ if (uni.restoreGlobal) {
   const clearHistory = () => {
     return del("/user/history/clear");
   };
-  const _imports_0 = "/static/app-icon.svg";
+  const _imports_0$1 = "/static/app-icon.svg";
   const _sfc_main$k = {
     components: { Toast: __easycom_0, Modal: __easycom_1, CustomTabbar: __easycom_2 },
     mixins: [toastMixin],
@@ -1786,7 +1816,7 @@ if (uni.restoreGlobal) {
         if (this.userInfo.nickname)
           return this.userInfo.nickname;
         const id = this.userInfo._id || this.userInfo.id || "";
-        return id ? `用户${String(id).slice(-6)}` : "情报站用户";
+        return id ? `用户${String(id).slice(-6)}` : "摸金校尉";
       },
       userInitial() {
         return this.isLogin && this.displayName ? this.displayName.slice(0, 1) : "绵";
@@ -1879,8 +1909,8 @@ if (uni.restoreGlobal) {
       },
       goAbout() {
         this.$modal({
-          title: "关于情报站",
-          content: "薅羊毛情报站 v1.0.0\n\n把全网优惠整理成更好逛、更好读的福利情报流。",
+          title: "关于赛博摸金",
+          content: "赛博摸金 v1.0.0\n\n在数字世界中探寻宝藏，让每一次点击都有价值。",
           showCancel: false
         });
       },
@@ -1937,7 +1967,7 @@ if (uni.restoreGlobal) {
             vue.createElementVNode("view", { class: "avatar-circle" }, [
               !$data.isLogin ? (vue.openBlock(), vue.createElementBlock("image", {
                 key: 0,
-                src: _imports_0,
+                src: _imports_0$1,
                 mode: "aspectFit",
                 class: "sheep-icon"
               })) : (vue.openBlock(), vue.createElementBlock(
@@ -1988,7 +2018,7 @@ if (uni.restoreGlobal) {
         }, [
           vue.createElementVNode("view", null, [
             vue.createElementVNode("text", { class: "menu-title" }, "我的发布"),
-            vue.createElementVNode("text", { class: "menu-subtitle" }, "回看你发过的所有线报")
+            vue.createElementVNode("text", { class: "menu-subtitle" }, "回看你发现的所有宝藏")
           ]),
           vue.createElementVNode("text", { class: "menu-arrow" }, "›")
         ]),
@@ -2034,7 +2064,7 @@ if (uni.restoreGlobal) {
         }, [
           vue.createElementVNode("view", null, [
             vue.createElementVNode("text", { class: "menu-title" }, "审核管理"),
-            vue.createElementVNode("text", { class: "menu-subtitle" }, "快速处理待审核线报")
+            vue.createElementVNode("text", { class: "menu-subtitle" }, "快速处理待审核宝藏")
           ]),
           vue.createElementVNode("view", { class: "trailing" }, [
             $data.auditCount > 0 ? (vue.openBlock(), vue.createElementBlock(
@@ -2098,6 +2128,7 @@ if (uni.restoreGlobal) {
     ]);
   }
   const PagesMineMine = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$j], ["__scopeId", "data-v-7c2ebfa5"], ["__file", "C:/Users/10292/Documents/HBuilderProjects/fossicker/pages/mine/mine.vue"]]);
+  const _imports_0 = "/static/share.png";
   const _sfc_main$j = {
     components: { Empty, Toast: __easycom_0 },
     mixins: [toastMixin],
@@ -2139,10 +2170,19 @@ if (uni.restoreGlobal) {
             _id: data.id || data._id,
             images: Array.isArray(data.images) ? data.images : []
           };
+          this.addHot();
         } catch (e) {
           this.$toastError("详情加载失败");
         } finally {
           this.loading = false;
+        }
+      },
+      // 增加热度
+      async addHot() {
+        try {
+          await addDealHot(this.dealId, 1);
+        } catch (e) {
+          formatAppLog("log", "at pages/detail/detail.vue:140", "增加热度失败", e);
         }
       },
       copyLink() {
@@ -2152,6 +2192,28 @@ if (uni.restoreGlobal) {
         uni.previewImage({
           current: this.deal.images[index],
           urls: this.deal.images
+        });
+      },
+      // 分享当前页面
+      shareDeal() {
+        const shareTitle = this.deal.title || "发现了一个宝藏优惠";
+        const shareDesc = this.deal.content ? this.deal.content.slice(0, 50) + "..." : "快来看看这个优惠";
+        const sharePath = `/pages/detail/detail?id=${this.dealId}`;
+        const shareUrl = `https://focker.us.ci/#${sharePath}`;
+        uni.share({
+          provider: "weixin",
+          title: shareTitle,
+          desc: shareDesc,
+          type: 0,
+          href: shareUrl,
+          imageUrl: this.deal.images && this.deal.images.length > 0 ? this.deal.images[0] : "",
+          scene: "WXSceneSession",
+          success: () => {
+            this.$toastSuccess("分享成功");
+          },
+          fail: (err) => {
+            formatAppLog("log", "at pages/detail/detail.vue:172", "分享失败", err);
+          }
         });
       }
     }
@@ -2179,18 +2241,28 @@ if (uni.restoreGlobal) {
             vue.createElementVNode(
               "text",
               { class: "category-tag" },
-              vue.toDisplayString($options.categoryEmoji) + " " + vue.toDisplayString($options.categoryName),
+              vue.toDisplayString($options.categoryName),
+              1
+              /* TEXT */
+            ),
+            vue.createElementVNode(
+              "text",
+              { class: "publish-time" },
+              vue.toDisplayString($options.formatTime($data.deal.publishTime || $data.deal.createTime) || "刚刚发布"),
               1
               /* TEXT */
             )
           ]),
-          vue.createElementVNode(
-            "text",
-            { class: "publish-time" },
-            vue.toDisplayString($options.formatTime($data.deal.publishTime || $data.deal.createTime) || "刚刚发布"),
-            1
-            /* TEXT */
-          )
+          vue.createElementVNode("view", {
+            class: "share-btn-wrap",
+            onClick: _cache[0] || (_cache[0] = (...args) => $options.shareDeal && $options.shareDeal(...args))
+          }, [
+            vue.createElementVNode("image", {
+              class: "share-btn",
+              src: _imports_0,
+              mode: "aspectFit"
+            })
+          ])
         ]),
         vue.createElementVNode(
           "text",
@@ -2282,7 +2354,7 @@ if (uni.restoreGlobal) {
         ]),
         vue.createElementVNode("view", {
           class: "link-box",
-          onClick: _cache[0] || (_cache[0] = (...args) => $options.copyLink && $options.copyLink(...args))
+          onClick: _cache[1] || (_cache[1] = (...args) => $options.copyLink && $options.copyLink(...args))
         }, [
           vue.createElementVNode(
             "text",
@@ -2296,7 +2368,7 @@ if (uni.restoreGlobal) {
       ])) : vue.createCommentVNode("v-if", true),
       !$data.loading && !($data.deal._id || $data.deal.id) ? (vue.openBlock(), vue.createBlock(_component_Empty, {
         key: 4,
-        text: "这条线报暂时无法查看",
+        text: "这条宝藏暂时无法查看",
         subText: "你可以返回列表刷新后再试。",
         icon: "📭"
       })) : vue.createCommentVNode("v-if", true),
@@ -2630,7 +2702,7 @@ if (uni.restoreGlobal) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "my-deals-page" }, [
       vue.createElementVNode("view", { class: "hero card" }, [
         vue.createElementVNode("text", { class: "hero-title" }, "我的发布"),
-        vue.createElementVNode("text", { class: "hero-subtitle" }, "这里收纳了你发过的每一条优惠线报，方便你回看和复盘。")
+        vue.createElementVNode("text", { class: "hero-subtitle" }, "这里收纳了你发现的每一处宝藏，方便你回看和复盘。")
       ]),
       $data.deals.length > 0 ? (vue.openBlock(), vue.createElementBlock("view", {
         key: 0,
@@ -2652,7 +2724,7 @@ if (uni.restoreGlobal) {
         key: 1,
         class: "empty-state"
       }, [
-        vue.createElementVNode("text", { class: "empty-text" }, "你还没有发布过线报"),
+        vue.createElementVNode("text", { class: "empty-text" }, "你还没有发布过宝藏"),
         vue.createElementVNode("text", { class: "empty-sub" }, "把刚发现的优惠整理一下发出来，很快这里就会丰富起来。")
       ]))
     ]);
@@ -2796,13 +2868,13 @@ if (uni.restoreGlobal) {
           vue.createElementVNode("view", { class: "horn horn-left" }),
           vue.createElementVNode("view", { class: "horn horn-right" })
         ]),
-        vue.createElementVNode("text", { class: "app-name" }, "薅羊毛"),
-        vue.createElementVNode("text", { class: "app-slogan" }, "优雅省钱 · 品质生活")
+        vue.createElementVNode("text", { class: "app-name" }, "赛博摸金"),
+        vue.createElementVNode("text", { class: "app-slogan" }, "数字寻宝 · 价值发现")
       ]),
       vue.createElementVNode("view", { class: "login-form card" }, [
         vue.createElementVNode("view", { class: "form-header" }, [
           vue.createElementVNode("text", { class: "form-title" }, "欢迎回来"),
-          vue.createElementVNode("text", { class: "form-subtitle" }, "登录后查看你的优惠情报")
+          vue.createElementVNode("text", { class: "form-subtitle" }, "登录后开启你的寻宝之旅")
         ]),
         vue.createElementVNode("button", {
           class: "primary-btn",
@@ -2993,7 +3065,7 @@ if (uni.restoreGlobal) {
     const _component_toast = resolveEasycom(vue.resolveDynamicComponent("toast"), __easycom_0);
     return vue.openBlock(), vue.createElementBlock("view", { class: "edit-profile-page" }, [
       vue.createElementVNode("view", { class: "hero card" }, [
-        vue.createElementVNode("text", { class: "hero-title" }, "首次登录，先完成你的情报站身份"),
+        vue.createElementVNode("text", { class: "hero-title" }, "首次登录，先完成你的摸金校尉身份"),
         vue.createElementVNode("text", { class: "hero-subtitle" }, "昵称只支持英文和数字，方便我们避免特殊字符带来的兼容问题。")
       ]),
       vue.createElementVNode("view", { class: "form-container card" }, [
@@ -3449,22 +3521,22 @@ if (uni.restoreGlobal) {
         return uni.getSystemInfoSync().platform === "h5" || typeof plus === "undefined";
       }
     },
-    async onLoad() {
-      await this.loadVersion();
+    onLoad() {
+      this.loadVersion();
       this.calculateCacheSize();
     },
     methods: {
-      async loadVersion() {
+      loadVersion() {
         try {
-          const platform = uni.getSystemInfoSync().platform.toLowerCase();
-          const res = await getLatestVersion({
-            platform: platform === "android" ? "android" : "ios"
-          });
-          if (res.code === 200 && res.data) {
-            this.version = res.data.versionName || "1.0.0";
+          const versionInfo = uni.getStorageSync("appVersion");
+          if (versionInfo && versionInfo.versionName) {
+            this.version = versionInfo.versionName;
+          } else {
+            this.version = "1.0.0";
           }
         } catch (e) {
-          formatAppLog("log", "at pages/settings/settings.vue:122", "获取版本失败", e);
+          formatAppLog("log", "at pages/settings/settings.vue:121", "读取版本失败", e);
+          this.version = "1.0.0";
         }
       },
       goChangePassword() {
@@ -3550,7 +3622,7 @@ if (uni.restoreGlobal) {
       goAbout() {
         this.$modal({
           title: "关于我们",
-          content: "薅羊毛情报站 - 分享优质优惠信息，一起薅羊毛！\n\n版本：" + this.version,
+          content: "赛博摸金 - 在数字世界中探寻宝藏！\n\n版本：" + this.version,
           showCancel: false
         });
       },
@@ -3558,24 +3630,25 @@ if (uni.restoreGlobal) {
         uni.showLoading({ title: "检查中..." });
         try {
           const platform = uni.getSystemInfoSync().platform.toLowerCase();
-          const res = await checkVersionUpdate({
-            platform: platform === "android" ? "android" : "ios",
-            versionCode: this.version
+          const res = await getLatestVersion({
+            platform: platform === "android" ? "android" : "ios"
           });
           uni.hideLoading();
           if (res.code === 200 && res.data) {
-            const { hasUpdate, forceUpdate, latestVersion, message } = res.data;
-            if (hasUpdate && latestVersion) {
+            const latestVersion = res.data;
+            const cloudVersion = latestVersion.versionName || "1.0.0";
+            const compareResult = this.compareVersion(cloudVersion, this.version);
+            if (compareResult > 0) {
               const confirmResult = await this.$modal({
-                title: "发现新版本 v" + latestVersion.versionName,
+                title: "发现新版本 v" + cloudVersion,
                 content: latestVersion.updateContent || "有新版本可以更新！\n\n是否立即下载？",
-                confirmText: forceUpdate ? "立即更新" : "稍后",
-                cancelText: forceUpdate ? "" : "取消"
+                confirmText: "立即更新",
+                cancelText: "稍后"
               });
               if (confirmResult.confirm && latestVersion.downloadUrl) {
                 const downloadUrl = latestVersion.downloadUrl;
                 const isApp = uni.getSystemInfoSync().platform === "android" || uni.getSystemInfoSync().platform === "ios";
-                if (forceUpdate && isApp) {
+                if (isApp) {
                   plus.runtime.openURL(downloadUrl);
                 } else {
                   uni.setClipboardData({
@@ -3590,7 +3663,7 @@ if (uni.restoreGlobal) {
                 }
               }
             } else {
-              this.$toastSuccess(message || "已是最新版本");
+              this.$toastSuccess("已是最新版本");
             }
           } else {
             this.$toastSuccess("已是最新版本");
@@ -3741,7 +3814,7 @@ if (uni.restoreGlobal) {
       vue.createElementVNode(
         "view",
         { class: "bottom-tip" },
-        "薅羊毛情报站 v" + vue.toDisplayString($data.version),
+        "赛博摸金 v" + vue.toDisplayString($data.version),
         1
         /* TEXT */
       ),
@@ -3781,7 +3854,7 @@ if (uni.restoreGlobal) {
       vue.createElementVNode("view", { class: "content card" }, [
         vue.createElementVNode("view", { class: "section" }, [
           vue.createElementVNode("text", { class: "section-title" }, "一、信息来源与真实性"),
-          vue.createElementVNode("text", { class: "section-text" }, ' 1. 本应用（"薅羊毛情报站"）仅作为优惠信息分享平台，所有优惠信息均由用户自行发布。 2. 我们不对用户发布信息的真实性、准确性、完整性、合法性做任何明示或暗示的保证。 3. 优惠信息可能存在时效性，活动规则可能随时变更，请以各平台官方最新规则为准。 4. 建议用户在参与任何优惠活动前，务必前往官方平台核实活动详情。 ')
+          vue.createElementVNode("text", { class: "section-text" }, ' 1. 本应用（"赛博摸金"）仅作为优惠信息分享平台，所有优惠信息均由用户自行发布。 2. 我们不对用户发布信息的真实性、准确性、完整性、合法性做任何明示或暗示的保证。 3. 优惠信息可能存在时效性，活动规则可能随时变更，请以各平台官方最新规则为准。 4. 建议用户在参与任何优惠活动前，务必前往官方平台核实活动详情。 ')
         ]),
         vue.createElementVNode("view", { class: "section" }, [
           vue.createElementVNode("text", { class: "section-title" }, "二、平台责任限制"),
@@ -3830,7 +3903,7 @@ if (uni.restoreGlobal) {
       vue.createElementVNode("view", { class: "content card" }, [
         vue.createElementVNode("view", { class: "section" }, [
           vue.createElementVNode("text", { class: "section-title" }, "一、协议接受"),
-          vue.createElementVNode("text", { class: "section-text" }, ' 欢迎使用"薅羊毛情报站"！在您使用本应用之前，请仔细阅读本用户协议。当您点击"同意"或开始使用本应用时，即表示您已阅读、理解并同意接受本协议的所有条款。 如果您不同意本协议的任何内容，请立即停止使用本应用。 ')
+          vue.createElementVNode("text", { class: "section-text" }, ' 欢迎使用"赛博摸金"！在您使用本应用之前，请仔细阅读本用户协议。当您点击"同意"或开始使用本应用时，即表示您已阅读、理解并同意接受本协议的所有条款。 如果您不同意本协议的任何内容，请立即停止使用本应用。 ')
         ]),
         vue.createElementVNode("view", { class: "section" }, [
           vue.createElementVNode("text", { class: "section-title" }, "二、服务说明"),
@@ -3886,7 +3959,7 @@ if (uni.restoreGlobal) {
       vue.createElementVNode("view", { class: "content card" }, [
         vue.createElementVNode("view", { class: "section" }, [
           vue.createElementVNode("text", { class: "section-title" }, "一、引言"),
-          vue.createElementVNode("text", { class: "section-text" }, ' "薅羊毛情报站"（以下简称"我们"）非常重视用户的隐私保护。本隐私政策说明我们如何收集、使用、存储和保护您的个人信息。 请您在使用本应用前仔细阅读本政策。如您不同意本政策的任何内容，请停止使用本应用。 ')
+          vue.createElementVNode("text", { class: "section-text" }, ' "赛博摸金"（以下简称"我们"）非常重视用户的隐私保护。本隐私政策说明我们如何收集、使用、存储和保护您的个人信息。 请您在使用本应用前仔细阅读本政策。如您不同意本政策的任何内容，请停止使用本应用。 ')
         ]),
         vue.createElementVNode("view", { class: "section" }, [
           vue.createElementVNode("text", { class: "section-title" }, "二、信息收集"),
@@ -6086,16 +6159,42 @@ if (uni.restoreGlobal) {
   __definePage("pages/admin-version/admin-version", PagesAdminVersionAdminVersion);
   const _sfc_main = {
     onLaunch() {
-      formatAppLog("log", "at App.vue:4", "App Launch");
+      formatAppLog("log", "at App.vue:6", "App Launch");
       this.$mountToast();
+      this.fetchAndStoreVersion();
     },
     onShow() {
-      formatAppLog("log", "at App.vue:9", "App Show");
+      formatAppLog("log", "at App.vue:13", "App Show");
     },
     onHide() {
-      formatAppLog("log", "at App.vue:12", "App Hide");
+      formatAppLog("log", "at App.vue:16", "App Hide");
     },
     methods: {
+      async fetchAndStoreVersion() {
+        try {
+          const platform = uni.getSystemInfoSync().platform.toLowerCase();
+          const res = await getLatestVersion({
+            platform: platform === "android" ? "android" : "ios"
+          });
+          if (res.code === 200 && res.data) {
+            const versionInfo = {
+              versionName: res.data.versionName || "1.0.0",
+              versionCode: res.data.versionCode || 1,
+              updateTime: Date.now()
+            };
+            uni.setStorageSync("appVersion", versionInfo);
+            formatAppLog("log", "at App.vue:32", "版本信息已存储:", versionInfo);
+          }
+        } catch (e) {
+          formatAppLog("log", "at App.vue:35", "获取版本失败", e);
+          const defaultVersion = {
+            versionName: "1.0.0",
+            versionCode: 1,
+            updateTime: Date.now()
+          };
+          uni.setStorageSync("appVersion", defaultVersion);
+        }
+      },
       $mountToast() {
         const toastVm = {
           show: (options) => {
