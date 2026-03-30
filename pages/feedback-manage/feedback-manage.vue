@@ -78,7 +78,6 @@
     </view>
     
     <view v-else class="empty-state">
-      <text class="empty-icon">📭</text>
       <text class="empty-text">暂无反馈</text>
     </view>
     
@@ -212,7 +211,7 @@ export default {
             userId: item.userId
           })
         } catch (e) {
-          console.error('发送通知失败', e)
+          // 发送通知失败
         }
         
         item.status = 1

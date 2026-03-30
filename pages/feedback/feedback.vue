@@ -125,7 +125,6 @@ export default {
             }).filter(url => url)
             this.imageList = [...this.imageList, ...imageUrls]
           } catch (e) {
-            console.error('上传失败:', e)
             this.$toastError('上传失败')
           } finally {
             uni.hideLoading()
@@ -167,7 +166,7 @@ export default {
             content: this.form.content.trim().substring(0, 100) + (this.form.content.length > 100 ? '...' : '')
           })
         } catch (e) {
-          console.error('发送通知失败', e)
+          // 发送通知失败
         }
         
         this.$toastSuccess('反馈提交成功')

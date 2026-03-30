@@ -118,7 +118,6 @@ export default {
           this.version = '1.0.0'
         }
       } catch (e) {
-        console.log('读取版本失败', e)
         this.version = '1.0.0'
       }
     },
@@ -138,8 +137,10 @@ export default {
       uni.showLoading({ title: '获取中...' })
       try {
         const platform = uni.getSystemInfoSync().platform.toLowerCase()
+        // H5环境下默认使用android平台
+        const platformType = platform === 'android' ? 'android' : (platform === 'ios' ? 'ios' : 'android')
         const res = await getVersionList({
-          platform: platform === 'android' ? 'android' : 'ios',
+          platform: platformType,
           status: 1
         })
         uni.hideLoading()

@@ -73,7 +73,7 @@ export default {
           this.version = res.data.versionName || '1.0.0'
         }
       } catch (e) {
-        console.log('获取版本失败', e)
+        // 获取版本失败
       }
     },
     tryNavigate() {

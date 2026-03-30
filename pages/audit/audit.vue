@@ -144,7 +144,6 @@ export default {
           res = await getDealList({ status: this.currentTab === 'approved' ? 1 : 2, page: this.page - 1, pageSize: this.pageSize })
         }
         let list = this.normalizeList(res)
-        console.log('审核列表数据:', this.currentTab, list)
         // 不再覆盖后端返回的status，使用后端真实状态
         // 0=待审核, 1=已通过, 2=已驳回/已下架
         if (this.page === 1) {

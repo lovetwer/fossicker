@@ -193,7 +193,7 @@ export default {
           this.categories = res
         }
       } catch (e) {
-        console.error('获取分类失败', e)
+        // 获取分类失败
       }
     },
     onCategoryChange(e) {
@@ -214,7 +214,6 @@ export default {
           try {
             const uploadPromises = res.tempFilePaths.map(path => uploadImage(path))
             const results = await Promise.all(uploadPromises)
-            console.log('涓婁紶缁撴灉:', results)
             // 閫傞厤鍚庣杩斿洖鏍煎紡: { code: 200, message: '...', data: '鍥剧墖URL' }
             const imageUrls = results.map(r => {
               if (r.code === 200 && r.data) {
@@ -222,10 +221,8 @@ export default {
               }
               return null
             }).filter(url => url)
-            console.log('鍥剧墖URLs:', imageUrls)
             this.form.images = [...this.form.images, ...imageUrls]
           } catch (e) {
-            console.error('上传失败:', e)
             this.$toastError('上传失败')
           } finally {
             uni.hideLoading()

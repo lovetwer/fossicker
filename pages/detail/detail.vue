@@ -137,7 +137,6 @@ export default {
         await addDealHot(this.dealId, 1)
       } catch (e) {
         // 热度增加失败不提示用户，静默处理
-        console.log('增加热度失败', e)
       }
     },
     copyLink() {
@@ -162,11 +161,7 @@ export default {
         type: 'text',
         summary: `${shareTitle}\n${shareDesc}\n${shareUrl}`,
         href: shareUrl,
-        success: () => {
-          console.log('分享成功')
-        },
-        fail: (err) => {
-          console.log('分享失败', err)
+        fail: () => {
           // 系统分享失败时，复制链接
           uni.setClipboardData({
             data: shareUrl,
@@ -184,8 +179,8 @@ export default {
           title: shareTitle,
           text: shareDesc,
           url: shareUrl
-        }).catch(err => {
-          console.log('分享取消', err)
+        }).catch(() => {
+          // 分享取消
         })
       } else {
         uni.setClipboardData({

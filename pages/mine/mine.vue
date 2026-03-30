@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <view class="mine-page">
     <view class="hero">
       <view class="hero-bg">
@@ -65,6 +65,13 @@
     </view>
 
     <view class="menu-list card">
+      <view class="menu-item" @click="goDownloadApp">
+        <view>
+          <text class="menu-title">下载 App</text>
+          <text class="menu-subtitle">解锁更多功能，体验更流畅</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
       <view class="menu-item" @click="goAbout">
         <view>
           <text class="menu-title">关于我们</text>
@@ -98,6 +105,7 @@
 
 <script>
 import { getUserInfo, getUnreadCount, getMyDeals } from '@/api/user.js'
+import { getVersionList } from '@/api/version.js'
 import Toast from '@/components/toast/toast.vue'
 import Modal from '@/components/modal/modal.vue'
 import CustomTabbar from '@/components/custom-tabbar/custom-tabbar.vue'
@@ -160,7 +168,7 @@ export default {
         await this.loadPublishCount()
         uni.setStorageSync('userInfo', this.userInfo)
       } catch (e) {
-        console.error('获取用户信息失败', e)
+        // 获取用户信息失败
       }
     },
     async loadPublishCount() {
@@ -176,16 +184,14 @@ export default {
           list = res.data
         }
         const total = list.length
-        console.log('发布数量:', total, res)
         this.userInfo = { ...this.userInfo, approvedCount: total }
       } catch (e) {
-        console.error('获取发布数量失败', e)
+        // 获取发布数量失败
       }
     },
     async loadUnreadCount() {
       try {
         const res = await getUnreadCount()
-        console.log('未读数量响应:', res)
         // 兼容多种返回格式
         if (res.code === 200) {
           this.unreadCount = res.data?.unreadCount ?? res.data?.count ?? res.unreadCount ?? res.count ?? 0
@@ -193,7 +199,7 @@ export default {
           this.unreadCount = res.unreadCount ?? res.count ?? 0
         }
       } catch (e) {
-        console.error('获取未读数量失败', e)
+        // 获取未读数量失败
       }
     },
     goLogin() {
@@ -224,6 +230,49 @@ export default {
     },
     goFeedback() {
       uni.navigateTo({ url: '/pages/feedback/feedback' })
+    },
+    async goDownloadApp() {
+      uni.showLoading({ title: '获取中...' })
+      try {
+        const platform = uni.getSystemInfoSync().platform.toLowerCase()
+        // H5环境下默认使用android平台
+        const platformType = platform === 'android' ? 'android' : (platform === 'ios' ? 'ios' : 'android')
+        const res = await getVersionList({
+          platform: platformType,
+          status: 1
+        })
+        uni.hideLoading()
+        if (res.code === 200 && res.data && res.data.length > 0) {
+          const latestVersion = res.data[0]
+          const downloadUrl = latestVersion.downloadUrl
+          if (downloadUrl) {
+            const confirmResult = await this.$modal({
+              title: '下载 App',
+              content: '发现版本 v' + latestVersion.versionName + '\n\n点击确定复制下载链接',
+              confirmText: '复制链接',
+              showCancel: false
+            })
+            if (confirmResult.confirm) {
+              uni.setClipboardData({
+                data: downloadUrl,
+                success: () => {
+                  this.$toastSuccess('下载链接已复制，请前往浏览器打开')
+                },
+                fail: () => {
+                  this.$toastInfo('下载链接：' + downloadUrl)
+                }
+              })
+            }
+          } else {
+            this.$toastError('暂无下载链接')
+          }
+        } else {
+          this.$toastError('暂无可用版本')
+        }
+      } catch (e) {
+        uni.hideLoading()
+        this.$toastError('获取失败')
+      }
     },
     goAudit() {
       uni.navigateTo({ url: '/pages/audit/audit' })

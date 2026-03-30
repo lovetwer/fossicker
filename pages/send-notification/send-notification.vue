@@ -96,7 +96,7 @@ export default {
             this.searchResults = res.data?.content || res.data || []
           }
         } catch (e) {
-          console.error('搜索用户失败', e)
+          // 搜索用户失败
         }
       }, 300)
     },

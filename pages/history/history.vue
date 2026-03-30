@@ -84,7 +84,7 @@ export default {
           this.hasMore = (data.page || 0) < (data.totalPages - 1)
         }
       } catch (e) {
-        console.error('获取浏览历史失败', e)
+        // 获取浏览历史失败
       } finally {
         this.loading = false
       }
@@ -102,7 +102,7 @@ export default {
         }
       } catch (e) {
         this.page--
-        console.error('加载更多失败', e)
+        // 加载更多失败
       } finally {
         this.loading = false
       }

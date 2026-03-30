@@ -183,7 +183,7 @@ export default {
           }))
         ]
       } catch (e) {
-        console.error('获取分类失败', e)
+        // 获取分类失败
       }
     },
     syncSelectedCategory() {

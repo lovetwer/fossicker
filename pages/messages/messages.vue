@@ -97,7 +97,7 @@ export default {
           this.hasMore = (data.number || 0) < (data.totalPages - 1)
         }
       } catch (e) {
-        console.error('获取通知失败', e)
+        // 获取通知失败
       } finally {
         this.loading = false
       }
@@ -115,7 +115,7 @@ export default {
         }
       } catch (e) {
         this.page--
-        console.error('加载更多失败', e)
+        // 加载更多失败
       } finally {
         this.loading = false
       }
@@ -126,7 +126,7 @@ export default {
           await markNotificationRead(item.id)
           item.isRead = true
         } catch (e) {
-          console.error('标记已读失败', e)
+          // 标记已读失败
         }
       }
       // 如果有dealId则跳转到详情页

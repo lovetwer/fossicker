@@ -31,16 +31,6 @@ if (uni.restoreGlobal) {
 }
 (function(vue) {
   "use strict";
-  function formatAppLog(type, filename, ...args) {
-    if (uni.__log__) {
-      uni.__log__(type, filename, ...args);
-    } else {
-      console[type].apply(console, [...args, filename]);
-    }
-  }
-  function resolveEasycom(component, easycom) {
-    return typeof component === "string" ? easycom : component;
-  }
   const BASE_URL = "https://yeiviicucucv.ap-northeast-1.clawcloudrun.com";
   const request = (options) => {
     return new Promise((resolve, reject) => {
@@ -182,7 +172,6 @@ if (uni.restoreGlobal) {
             this.version = res.data.versionName || "1.0.0";
           }
         } catch (e) {
-          formatAppLog("log", "at pages/splash/splash.vue:76", "获取版本失败", e);
         }
       },
       tryNavigate() {
@@ -319,6 +308,9 @@ if (uni.restoreGlobal) {
     ])) : vue.createCommentVNode("v-if", true);
   }
   const __easycom_0 = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["render", _sfc_render$r], ["__scopeId", "data-v-001f1a33"], ["__file", "C:/Users/10292/Documents/HBuilderProjects/fossicker/components/toast/toast.vue"]]);
+  function resolveEasycom(component, easycom) {
+    return typeof component === "string" ? easycom : component;
+  }
   const _sfc_main$r = {
     name: "CustomTabbar",
     props: {
@@ -815,7 +807,6 @@ if (uni.restoreGlobal) {
             }))
           ];
         } catch (e) {
-          formatAppLog("error", "at pages/index/index.vue:186", "获取分类失败", e);
         }
       },
       syncSelectedCategory() {
@@ -1399,7 +1390,6 @@ if (uni.restoreGlobal) {
             this.categories = res;
           }
         } catch (e) {
-          formatAppLog("error", "at pages/publish/publish.vue:196", "获取分类失败", e);
         }
       },
       onCategoryChange(e) {
@@ -1420,17 +1410,14 @@ if (uni.restoreGlobal) {
             try {
               const uploadPromises = res.tempFilePaths.map((path) => uploadImage(path));
               const results = await Promise.all(uploadPromises);
-              formatAppLog("log", "at pages/publish/publish.vue:217", "涓婁紶缁撴灉:", results);
               const imageUrls = results.map((r) => {
                 if (r.code === 200 && r.data) {
                   return r.data;
                 }
                 return null;
               }).filter((url) => url);
-              formatAppLog("log", "at pages/publish/publish.vue:225", "鍥剧墖URLs:", imageUrls);
               this.form.images = [...this.form.images, ...imageUrls];
             } catch (e) {
-              formatAppLog("error", "at pages/publish/publish.vue:228", "上传失败:", e);
               this.$toastError("上传失败");
             } finally {
               uni.hideLoading();
@@ -1853,7 +1840,6 @@ if (uni.restoreGlobal) {
           await this.loadPublishCount();
           uni.setStorageSync("userInfo", this.userInfo);
         } catch (e) {
-          formatAppLog("error", "at pages/mine/mine.vue:163", "获取用户信息失败", e);
         }
       },
       async loadPublishCount() {
@@ -1868,24 +1854,20 @@ if (uni.restoreGlobal) {
             list = res.data;
           }
           const total = list.length;
-          formatAppLog("log", "at pages/mine/mine.vue:179", "发布数量:", total, res);
           this.userInfo = { ...this.userInfo, approvedCount: total };
         } catch (e) {
-          formatAppLog("error", "at pages/mine/mine.vue:182", "获取发布数量失败", e);
         }
       },
       async loadUnreadCount() {
         var _a, _b;
         try {
           const res = await getUnreadCount();
-          formatAppLog("log", "at pages/mine/mine.vue:188", "未读数量响应:", res);
           if (res.code === 200) {
             this.unreadCount = ((_a = res.data) == null ? void 0 : _a.unreadCount) ?? ((_b = res.data) == null ? void 0 : _b.count) ?? res.unreadCount ?? res.count ?? 0;
           } else {
             this.unreadCount = res.unreadCount ?? res.count ?? 0;
           }
         } catch (e) {
-          formatAppLog("error", "at pages/mine/mine.vue:196", "获取未读数量失败", e);
         }
       },
       goLogin() {
@@ -2184,7 +2166,6 @@ if (uni.restoreGlobal) {
         try {
           await addDealHot(this.dealId, 1);
         } catch (e) {
-          formatAppLog("log", "at pages/detail/detail.vue:140", "增加热度失败", e);
         }
       },
       copyLink() {
@@ -2208,11 +2189,7 @@ if (uni.restoreGlobal) {
 ${shareDesc}
 ${shareUrl}`,
           href: shareUrl,
-          success: () => {
-            formatAppLog("log", "at pages/detail/detail.vue:166", "分享成功");
-          },
-          fail: (err) => {
-            formatAppLog("log", "at pages/detail/detail.vue:169", "分享失败", err);
+          fail: () => {
             uni.setClipboardData({
               data: shareUrl,
               success: () => {
@@ -3225,7 +3202,6 @@ ${shareUrl}`,
             res = await getDealList({ status: this.currentTab === "approved" ? 1 : 2, page: this.page - 1, pageSize: this.pageSize });
           }
           let list = this.normalizeList(res);
-          formatAppLog("log", "at pages/audit/audit.vue:147", "审核列表数据:", this.currentTab, list);
           if (this.page === 1) {
             this.auditList = list;
           } else {
@@ -3541,7 +3517,6 @@ ${shareUrl}`,
             this.version = "1.0.0";
           }
         } catch (e) {
-          formatAppLog("log", "at pages/settings/settings.vue:121", "读取版本失败", e);
           this.version = "1.0.0";
         }
       },
@@ -4265,7 +4240,6 @@ ${shareUrl}`,
             this.hasMore = (data.page || 0) < data.totalPages - 1;
           }
         } catch (e) {
-          formatAppLog("error", "at pages/history/history.vue:87", "获取浏览历史失败", e);
         } finally {
           this.loading = false;
         }
@@ -4284,7 +4258,6 @@ ${shareUrl}`,
           }
         } catch (e) {
           this.page--;
-          formatAppLog("error", "at pages/history/history.vue:105", "加载更多失败", e);
         } finally {
           this.loading = false;
         }
@@ -4498,7 +4471,6 @@ ${shareUrl}`,
             this.hasMore = (data.number || 0) < data.totalPages - 1;
           }
         } catch (e) {
-          formatAppLog("error", "at pages/messages/messages.vue:100", "获取通知失败", e);
         } finally {
           this.loading = false;
         }
@@ -4517,7 +4489,6 @@ ${shareUrl}`,
           }
         } catch (e) {
           this.page--;
-          formatAppLog("error", "at pages/messages/messages.vue:118", "加载更多失败", e);
         } finally {
           this.loading = false;
         }
@@ -4528,7 +4499,6 @@ ${shareUrl}`,
             await markNotificationRead(item.id);
             item.isRead = true;
           } catch (e) {
-            formatAppLog("error", "at pages/messages/messages.vue:129", "标记已读失败", e);
           }
         }
         if (item.dealId) {
@@ -4777,7 +4747,6 @@ ${shareUrl}`,
               this.searchResults = ((_a = res.data) == null ? void 0 : _a.content) || res.data || [];
             }
           } catch (e) {
-            formatAppLog("error", "at pages/send-notification/send-notification.vue:99", "搜索用户失败", e);
           }
         }, 300);
       },
@@ -4998,7 +4967,6 @@ ${shareUrl}`,
               }).filter((url) => url);
               this.imageList = [...this.imageList, ...imageUrls];
             } catch (e) {
-              formatAppLog("error", "at pages/feedback/feedback.vue:128", "上传失败:", e);
               this.$toastError("上传失败");
             } finally {
               uni.hideLoading();
@@ -5037,7 +5005,6 @@ ${shareUrl}`,
               content: this.form.content.trim().substring(0, 100) + (this.form.content.length > 100 ? "..." : "")
             });
           } catch (e) {
-            formatAppLog("error", "at pages/feedback/feedback.vue:170", "发送通知失败", e);
           }
           this.$toastSuccess("反馈提交成功");
           setTimeout(() => {
@@ -5480,7 +5447,6 @@ ${shareUrl}`,
               userId: item.userId
             });
           } catch (e) {
-            formatAppLog("error", "at pages/feedback-manage/feedback-manage.vue:215", "发送通知失败", e);
           }
           item.status = 1;
           item.reply = item.replyText.trim();
@@ -5646,7 +5612,6 @@ ${shareUrl}`,
         key: 1,
         class: "empty-state"
       }, [
-        vue.createElementVNode("text", { class: "empty-icon" }, "📭"),
         vue.createElementVNode("text", { class: "empty-text" }, "暂无反馈")
       ])),
       vue.createVNode(
@@ -6165,15 +6130,12 @@ ${shareUrl}`,
   __definePage("pages/admin-version/admin-version", PagesAdminVersionAdminVersion);
   const _sfc_main = {
     onLaunch() {
-      formatAppLog("log", "at App.vue:6", "App Launch");
       this.$mountToast();
       this.fetchAndStoreVersion();
     },
     onShow() {
-      formatAppLog("log", "at App.vue:13", "App Show");
     },
     onHide() {
-      formatAppLog("log", "at App.vue:16", "App Hide");
     },
     methods: {
       async fetchAndStoreVersion() {
@@ -6189,10 +6151,8 @@ ${shareUrl}`,
               updateTime: Date.now()
             };
             uni.setStorageSync("appVersion", versionInfo);
-            formatAppLog("log", "at App.vue:32", "版本信息已存储:", versionInfo);
           }
         } catch (e) {
-          formatAppLog("log", "at App.vue:35", "获取版本失败", e);
           const defaultVersion = {
             versionName: "1.0.0",
             versionCode: 1,
