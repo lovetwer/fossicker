@@ -65,13 +65,6 @@
     </view>
 
     <view class="menu-list card">
-      <view class="menu-item" @click="goDownloadApp">
-        <view>
-          <text class="menu-title">下载 App</text>
-          <text class="menu-subtitle">解锁更多功能，体验更流畅</text>
-        </view>
-        <text class="menu-arrow">›</text>
-      </view>
       <view class="menu-item" @click="goAbout">
         <view>
           <text class="menu-title">关于我们</text>
@@ -87,6 +80,22 @@
         <text class="menu-arrow">›</text>
       </view>
     </view>
+
+    <!-- #ifdef H5 -->
+    <!-- 下载 App 按钮 -->
+    <view class="download-section" @click="goDownloadApp">
+      <view class="download-left">
+        <view class="download-icon-box">
+          <image src="/static/app-icon.svg" mode="aspectFit" class="download-icon-img"></image>
+        </view>
+        <view class="download-info">
+          <text class="download-title">下载赛博摸金 App</text>
+          <text class="download-subtitle">更流畅的体验 · 更多功能</text>
+        </view>
+      </view>
+      <text class="download-link">去下载 ›</text>
+    </view>
+    <!-- #endif -->
 
     <view class="logout-btn card" v-if="isLogin" @click="logout">
       <text>退出登录</text>
@@ -475,6 +484,55 @@ export default {
   font-size: 34rpx;
   color: #c2c8d2;
 }
+
+/* 下载 App */
+.download-section {
+  margin: 24rpx 24rpx 32rpx;
+  padding: 20rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.download-left {
+  display: flex;
+  align-items: center;
+}
+.download-icon-box {
+  width: 72rpx;
+  height: 72rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+.download-icon-img {
+  width: 48rpx;
+  height: 48rpx;
+}
+.download-info {
+  display: flex;
+  flex-direction: column;
+}
+.download-title {
+  font-size: 30rpx;
+  color: #1f2937;
+  font-weight: 600;
+  margin-bottom: 6rpx;
+}
+.download-subtitle {
+  font-size: 24rpx;
+  color: #9ca3af;
+}
+.download-link {
+  font-size: 28rpx;
+  color: #c93a5a;
+  font-weight: 500;
+}
+
 .logout-btn {
   padding: 28rpx;
   text-align: center;
