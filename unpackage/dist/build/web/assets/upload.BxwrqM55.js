@@ -1,0 +1,1 @@
+import{f as e,U as a}from"./index-Ceyb3iYN.js";const s=s=>new Promise(((o,t)=>{const r=e("token");a({url:"https://yeiviicucucv.ap-northeast-1.clawcloudrun.com/upload/image",filePath:s,name:"file",header:{Authorization:r?`Bearer ${r}`:""},success:e=>{if(200===e.statusCode){const a=JSON.parse(e.data);o(a)}else t(new Error("上传失败"))},fail:e=>{t(e)}})}));export{s as u};

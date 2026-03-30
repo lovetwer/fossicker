@@ -1,6 +1,8 @@
 // 文件上传接口
 
-import { post } from './request.js'
+//const BASE_URL = 'http://101.126.90.167:8080'
+//const BASE_URL = 'http://192.168.31.86:8080'
+const BASE_URL = 'https://yeiviicucucv.ap-northeast-1.clawcloudrun.com'
 
 // 上传图片
 export const uploadImage = (filePath) => {
@@ -8,7 +10,7 @@ export const uploadImage = (filePath) => {
 		const token = uni.getStorageSync('token')
 		
 		uni.uploadFile({
-			url: 'http://192.168.31.86:8080/upload/image',
+			url: BASE_URL + '/upload/image',
 			filePath: filePath,
 			name: 'file',
 			header: {

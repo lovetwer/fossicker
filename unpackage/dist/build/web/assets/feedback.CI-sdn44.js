@@ -1,1 +1,0 @@
-import{M as a,L as e,R as s}from"./index-CYks85U_.js";const d=e=>a("/feedback",e),r=a=>e("/feedback/my",a),c=a=>e("/admin/feedback",a),f=(a,e)=>s(`/admin/feedback/${a}/reply`,{reply:e});export{c as a,r as g,f as r,d as s};
